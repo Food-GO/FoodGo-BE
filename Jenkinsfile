@@ -40,7 +40,7 @@ pipeline {
                             ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
                                 cd FoodGo-BE/api-module &&
                                 chmod +x ../gradlew &&
-                                ../gradlew build
+                                ./gradlew --no-daemon bootJar
                             '
                         """
                     }
