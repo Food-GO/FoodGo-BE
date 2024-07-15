@@ -1,0 +1,56 @@
+package com.foodgo.coremodule.auth.domain.organization;
+
+import com.foodgo.coremodule.auth.domain.organization.enums.*;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "company")
+@DiscriminatorValue("COMPANY")
+public class Company extends Organization {
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "collaboration_type")
+	private CollaborationType collaborationType;
+
+	@Column(name = "sponsorship_content")
+	private String sponsorshipContent;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "company_type")
+	private CompanyType companyType;
+
+	// 초기 생성 시 사용
+	public Company(String name, String email, String password) {
+		super(name, email, password, null, null, OrganizationType.COMPANY, ProfileStatus.INACTIVE, Role.GUEST);
+		this.collaborationType = CollaborationType.NONE;
+		this.companyType = CompanyType.NONE;
+	}
+
+	// 프로필 업데이트 시 사용
+	public void updateInfo(
+		String name,
+		String description,
+		String imageUrl,
+		CollaborationType collaborationType,
+		String sponsorshipContent,
+		CompanyType companyType,
+		ProfileStatus profileStatus
+	) {
+		super.updateInfo(name, description, imageUrl, profileStatus);
+		this.collaborationType = collaborationType;
+		this.sponsorshipContent = sponsorshipContent;
+		this.companyType = companyType;
+	}
+	
+	@Override
+	public String getSubType() {
+		return companyType.name();
+	}
+}
