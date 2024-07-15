@@ -7,16 +7,43 @@ pipeline {
         SSH_KEY = credentials('ssh-key-id')
     }
 
-    options {
-        skipDefaultCheckout()
-    }
-
     stages {
         stage('Prepare Environment') {
             steps {
                 script {
+                    // Install Docker if not already installed
                     sshagent(credentials: ['ssh-key-id']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'docker info >/dev/null 2>&1 && echo Running || echo Not running'"
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                                if ! command -v docker &> /dev/null; then
+                                    echo "Docker is not installed. Installing Docker..."
+                                    sudo yum update -y
+                                    sudo amazon-linux-extras install docker -y
+                                    sudo service docker start
+                                    sudo usermod -a -G docker ${REMOTE_USER}
+                                fi
+                            '
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Install Docker Compose') {
+            steps {
+                script {
+                    // Install Docker Compose if not already installed
+                    sshagent(credentials: ['ssh-key-id']) {
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                                if ! command -v docker-compose &> /dev/null; then
+                                    echo "Docker Compose is not installed. Installing Docker Compose..."
+                                    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                                    sudo chmod +x /usr/local/bin/docker-compose
+                                    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+                                fi
+                            '
+                        '''
                     }
                 }
             }
@@ -26,7 +53,14 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['ssh-key-id']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'git clone -b main https://github.com/Food-GO/FoodGo-BE.git'"
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                                if [ -d "FoodGo-BE" ]; then
+                                    rm -rf FoodGo-BE
+                                fi
+                                git clone -b feat/security-login https://github.com/Food-GO/FoodGo-BE.git
+                            '
+                        '''
                     }
                 }
             }
@@ -36,13 +70,18 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['ssh-key-id']) {
-                        sh """
+                        sh '''
                             ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
                                 cd FoodGo-BE/api-module &&
-                                chmod +x ../gradlew &&
-                                ./gradlew --no-daemon bootJar
+                                if [ -f "../gradlew" ]; then
+                                    chmod +x ../gradlew &&
+                                    ../gradlew --no-daemon bootJar
+                                else
+                                    echo "Gradle Wrapper (gradlew) not found"
+                                    exit 1
+                                fi
                             '
-                        """
+                        '''
                     }
                 }
             }
@@ -52,7 +91,12 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['ssh-key-id']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'cd FoodGo-BE && docker build -t anjeonghoo/food_go .'"
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                                cd FoodGo-BE &&
+                                docker build -t anjeonghoo/food_go .
+                            '
+                        '''
                     }
                 }
             }
@@ -62,7 +106,13 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['ssh-key-id']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'cd FoodGo-BE && docker-compose down && docker-compose up -d'"
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                                cd FoodGo-BE &&
+                                docker-compose down &&
+                                docker-compose up -d
+                            '
+                        '''
                     }
                 }
             }
