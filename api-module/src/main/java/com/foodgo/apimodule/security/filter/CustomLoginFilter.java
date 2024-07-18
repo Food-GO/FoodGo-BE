@@ -55,25 +55,25 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		return authenticationManager.authenticate(authToken);
 	}
 
-	@Override
-	protected void successfulAuthentication(
-		@NonNull HttpServletRequest request,
-		@NonNull HttpServletResponse response,
-		@NonNull FilterChain chain,
-		@NonNull Authentication authentication) throws IOException {
-		logger.info("[*] Login Success");
-
-		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
-
-		logger.info("[*] Login with " + customUserDetails.getUsername());
-
-		JwtPair jwtPair = new JwtPair(
-			jwtUtil.createJwtAccessToken(customUserDetails),
-			jwtUtil.createJwtRefreshToken(customUserDetails)
-		);
-
-		HttpResponseUtil.setSuccessResponse(response, HttpStatus.CREATED, jwtPair);
-	}
+//	@Override
+//	protected void successfulAuthentication(
+//		@NonNull HttpServletRequest request,
+//		@NonNull HttpServletResponse response,
+//		@NonNull FilterChain chain,
+//		@NonNull Authentication authentication) throws IOException {
+//		logger.info("[*] Login Success");
+//
+//		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
+//
+//		logger.info("[*] Login with " + customUserDetails.getUsername());
+//
+//		JwtPair jwtPair = new JwtPair(
+//			jwtUtil.createJwtAccessToken(customUserDetails),
+//			jwtUtil.createJwtRefreshToken(customUserDetails)
+//		);
+//
+//		HttpResponseUtil.setSuccessResponse(response, HttpStatus.CREATED, jwtPair);
+//	}
 
 	@Override
 	protected void unsuccessfulAuthentication(

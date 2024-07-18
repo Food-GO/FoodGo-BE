@@ -1,6 +1,5 @@
 package com.foodgo.apimodule.security.user;
 
-import com.foodgo.coremodule.auth.domain.organization.Organization;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +20,6 @@ public class CustomUserDetails implements UserDetails {
         this.email = email;
         this.password = password;
         this.authority = authority;
-    }
-
-    public CustomUserDetails(Organization organization) {
-        this.id = organization.getId();
-        this.email = organization.getEmail();
-        this.password = organization.getPassword();
-        this.authority = organization.getOrganizationType().toString();
     }
 
     @Override
