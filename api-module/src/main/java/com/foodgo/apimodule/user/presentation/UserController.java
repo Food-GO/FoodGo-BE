@@ -29,12 +29,12 @@ public class UserController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "카카오 로그인 성공",
+                            description = "로그인 성공",
                             useReturnTypeSchema = true
                     )
             }
     )
-    @Operation(summary = "카카오 로그인 API", description = "카카오 로그인 API입니다.")
+    @Operation(summary = "로그인 API", description = "로그인 API입니다.")
     public LoginResponse ssoLogin(@Valid @RequestBody LoginRequest loginRequest) {
         return loginUseCase.ssoLogin(loginRequest);
     }
