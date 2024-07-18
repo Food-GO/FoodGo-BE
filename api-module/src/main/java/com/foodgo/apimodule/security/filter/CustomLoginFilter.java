@@ -49,49 +49,31 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		String email = (String)requestBody.get("email");
 		String password = (String)requestBody.get("password");
-		String fcmToken = (String)requestBody.get("fcmToken");
-
-		if (fcmToken != null && !fcmToken.isEmpty()) {
-			redisUtil.saveAsValue(
-				email + "_fcm_token",
-				fcmToken,
-				999999999L,
-				TimeUnit.MILLISECONDS
-			);
-		} else {
-			// TODO FcmToken이 없는 경우 처리
-			redisUtil.saveAsValue(
-				email + "_fcm_token",
-				"fcmTokenFcmTokenFcmTokenFcmToken",
-				999999999L,
-				TimeUnit.MILLISECONDS
-			);
-		}
 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
 
 		return authenticationManager.authenticate(authToken);
 	}
 
-	@Override
-	protected void successfulAuthentication(
-		@NonNull HttpServletRequest request,
-		@NonNull HttpServletResponse response,
-		@NonNull FilterChain chain,
-		@NonNull Authentication authentication) throws IOException {
-		logger.info("[*] Login Success");
-
-		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
-
-		logger.info("[*] Login with " + customUserDetails.getUsername());
-
-		JwtPair jwtPair = new JwtPair(
-			jwtUtil.createJwtAccessToken(customUserDetails),
-			jwtUtil.createJwtRefreshToken(customUserDetails)
-		);
-
-		HttpResponseUtil.setSuccessResponse(response, HttpStatus.CREATED, jwtPair);
-	}
+//	@Override
+//	protected void successfulAuthentication(
+//		@NonNull HttpServletRequest request,
+//		@NonNull HttpServletResponse response,
+//		@NonNull FilterChain chain,
+//		@NonNull Authentication authentication) throws IOException {
+//		logger.info("[*] Login Success");
+//
+//		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
+//
+//		logger.info("[*] Login with " + customUserDetails.getUsername());
+//
+//		JwtPair jwtPair = new JwtPair(
+//			jwtUtil.createJwtAccessToken(customUserDetails),
+//			jwtUtil.createJwtRefreshToken(customUserDetails)
+//		);
+//
+//		HttpResponseUtil.setSuccessResponse(response, HttpStatus.CREATED, jwtPair);
+//	}
 
 	@Override
 	protected void unsuccessfulAuthentication(
