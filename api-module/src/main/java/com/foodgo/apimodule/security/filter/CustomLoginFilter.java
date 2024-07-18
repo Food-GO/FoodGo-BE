@@ -49,24 +49,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		String email = (String)requestBody.get("email");
 		String password = (String)requestBody.get("password");
-		String fcmToken = (String)requestBody.get("fcmToken");
-
-		if (fcmToken != null && !fcmToken.isEmpty()) {
-			redisUtil.saveAsValue(
-				email + "_fcm_token",
-				fcmToken,
-				999999999L,
-				TimeUnit.MILLISECONDS
-			);
-		} else {
-			// TODO FcmToken이 없는 경우 처리
-			redisUtil.saveAsValue(
-				email + "_fcm_token",
-				"fcmTokenFcmTokenFcmTokenFcmToken",
-				999999999L,
-				TimeUnit.MILLISECONDS
-			);
-		}
 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
 

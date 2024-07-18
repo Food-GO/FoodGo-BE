@@ -1,10 +1,11 @@
 package com.foodgo.apimodule.security.util;
 
-import com.foodgo.commonmodule.redis.util.RedisUtil;
-import com.foodgo.apimodule.security.user.CustomUserDetails;
 import com.foodgo.commonmodule.exception.jwt.SecurityCustomException;
-import com.foodgo.commonmodule.exception.jwt.dto.JwtPair;
-import io.jsonwebtoken.*;
+import com.foodgo.commonmodule.redis.util.RedisUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.foodgo.commonmodule.exception.jwt.SecurityErrorCode.INVALID_TOKEN;
-import static com.foodgo.commonmodule.exception.jwt.SecurityErrorCode.TOKEN_EXPIRED;
 
 @Component
 @Slf4j
@@ -44,7 +44,8 @@ public class JwtUtil {
         redisUtil = redis;
     }
 
-    public String createJwtAccessToken(CustomUserDetails customUserDetails) {
+    public String createJwtAccessToken(String name, String email) {
+
         Instant issuedAt = Instant.now();
         Instant expiration = issuedAt.plusMillis(accessExpMs);
 
@@ -53,16 +54,15 @@ public class JwtUtil {
                 .add("alg", "HS256")
                 .add("typ", "JWT")
                 .and()
-                .subject(customUserDetails.getId().toString())
-                .claim("email", customUserDetails.getUsername())
-                .claim(AUTHORITIES_CLAIM_NAME, customUserDetails.getAuthority())
+                .subject(name)
+                .claim("email", email)
                 .issuedAt(Date.from(issuedAt))
                 .expiration(Date.from(expiration))
                 .signWith(secretKey)
                 .compact();
     }
 
-    public String createJwtRefreshToken(CustomUserDetails customUserDetails) {
+    public String createJwtRefreshToken(String name, String email) {
         Instant issuedAt = Instant.now();
         Instant expiration = issuedAt.plusMillis(refreshExpMs);
 
@@ -71,16 +71,15 @@ public class JwtUtil {
                 .add("alg", "HS256")
                 .add("typ", "JWT")
                 .and()
-                .subject(customUserDetails.getId().toString())
-                .claim("email", customUserDetails.getUsername())
-                .claim(AUTHORITIES_CLAIM_NAME, customUserDetails.getAuthority())
+                .subject(name)
+                .claim("email", email)
                 .issuedAt(Date.from(issuedAt))
                 .expiration(Date.from(expiration))
                 .signWith(secretKey)
                 .compact();
 
         redisUtil.saveAsValue(
-                customUserDetails.getEmail() + "_refresh_token",
+                name + "_refresh_token",
                 refreshToken,
                 refreshExpMs,
                 TimeUnit.MILLISECONDS
@@ -89,28 +88,28 @@ public class JwtUtil {
         return refreshToken;
     }
 
-    public JwtPair reissueToken(String refreshToken) {
-        try {
-            validateRefreshToken(refreshToken);
-            log.info("[*] Valid RefreshToken");
-
-            CustomUserDetails tempCustomUserDetails = new CustomUserDetails(
-                    getId(refreshToken),
-                    getEmail(refreshToken),
-                    null,
-                    getAuthority(refreshToken)
-            );
-
-            return new JwtPair(
-                    createJwtAccessToken(tempCustomUserDetails),
-                    createJwtRefreshToken(tempCustomUserDetails)
-            );
-        } catch (IllegalArgumentException iae) {
-            throw new SecurityCustomException(INVALID_TOKEN, iae);
-        } catch (ExpiredJwtException eje) {
-            throw new SecurityCustomException(TOKEN_EXPIRED, eje);
-        }
-    }
+//    public JwtPair reissueToken(String refreshToken) {
+//        try {
+//            validateRefreshToken(refreshToken);
+//            log.info("[*] Valid RefreshToken");
+//
+//            CustomUserDetails tempCustomUserDetails = new CustomUserDetails(
+//                    getId(refreshToken),
+//                    getEmail(refreshToken),
+//                    null,
+//                    getAuthority(refreshToken)
+//            );
+//
+//            return new JwtPair(
+//                    createJwtAccessToken(tempCustomUserDetails),
+//                    createJwtRefreshToken(tempCustomUserDetails)
+//            );
+//        } catch (IllegalArgumentException iae) {
+//            throw new SecurityCustomException(INVALID_TOKEN, iae);
+//        } catch (ExpiredJwtException eje) {
+//            throw new SecurityCustomException(TOKEN_EXPIRED, eje);
+//        }
+//    }
 
     public String resolveAccessToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");

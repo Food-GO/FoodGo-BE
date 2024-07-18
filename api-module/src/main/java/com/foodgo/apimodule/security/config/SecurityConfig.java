@@ -36,14 +36,6 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
-    private final String[] authUrls = {
-            "/",
-            "/h2-console"
-    };
-    private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
-            .toArray(String[]::new);
-
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
@@ -80,31 +72,30 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(allowedUrls).permitAll()
-                        .requestMatchers("/**").authenticated()
+                        .requestMatchers("/v1/api/**").authenticated()
                         .anyRequest().permitAll()
                 );
 
         // Jwt Filter (with login)
-        CustomLoginFilter loginFilter = new CustomLoginFilter(
-                authenticationManager(authenticationConfiguration), jwtUtil, redisUtil
-        );
-        loginFilter.setFilterProcessesUrl("/api/v2/auth/login");
-
-        http
-                .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
-
-        http
-                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
-
-        http
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                        .accessDeniedHandler(jwtAccessDeniedHandler)
-                );
+//        CustomLoginFilter loginFilter = new CustomLoginFilter(
+//                authenticationManager(authenticationConfiguration), jwtUtil, redisUtil
+//        );
+//        loginFilter.setFilterProcessesUrl("/api/v2/auth/login");
+//
+//        http
+//                .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        http
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
+//
+//        http
+//                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+//
+//        http
+//                .exceptionHandling(exception -> exception
+//                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                        .accessDeniedHandler(jwtAccessDeniedHandler)
+//                );
 
         // 세션 사용 안함
         http
@@ -113,27 +104,27 @@ public class SecurityConfig {
                 );
 
         // Logout Filter
-        http
-                .logout(logout -> logout
-                        .logoutUrl("/api/v2/auth/logout")
-                        .addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
-                        .logoutSuccessHandler((request, response, authentication) ->
-                                HttpResponseUtil.setSuccessResponse(
-                                        response,
-                                        HttpStatus.OK,
-                                        "로그아웃 성공"
-                                )
-                        )
-                )
-                .addFilterAfter(new LogoutFilter(
-                                (request, response, authentication) ->
-                                        HttpResponseUtil.setSuccessResponse(
-                                                response,
-                                                HttpStatus.OK,
-                                                "로그아웃 성공"
-                                        ), new CustomLogoutHandler(redisUtil, jwtUtil)),
-                        JwtAuthenticationFilter.class
-                );
+//        http
+//                .logout(logout -> logout
+//                        .logoutUrl("/api/v2/auth/logout")
+//                        .addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
+//                        .logoutSuccessHandler((request, response, authentication) ->
+//                                HttpResponseUtil.setSuccessResponse(
+//                                        response,
+//                                        HttpStatus.OK,
+//                                        "로그아웃 성공"
+//                                )
+//                        )
+//                )
+//                .addFilterAfter(new LogoutFilter(
+//                                (request, response, authentication) ->
+//                                        HttpResponseUtil.setSuccessResponse(
+//                                                response,
+//                                                HttpStatus.OK,
+//                                                "로그아웃 성공"
+//                                        ), new CustomLogoutHandler(redisUtil, jwtUtil)),
+//                        JwtAuthenticationFilter.class
+//                );
 
         return http.build();
     }
