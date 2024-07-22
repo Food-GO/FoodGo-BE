@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: local
   jpa:
     open-in-view: false
     hibernate:
@@ -11,11 +11,15 @@ spring:
   config:
     activate:
       on-profile: local
-    import: application-local.yml
+    import: application-prod.yml, application-redis.yml
 
 ---
 spring:
   config:
     activate:
       on-profile: prod
-    import: application-prod.yml
+    import: application-prod.yml, application-redis.yml
+
+
+server:
+  port: 8080
