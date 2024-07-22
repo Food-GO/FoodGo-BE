@@ -17,11 +17,13 @@ public class RedisConfig {
 	@Value("${spring.data.redis.port}")
 	private int redisPort;
 
+	// Redis CrudRepository 설정
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
 		return new LettuceConnectionFactory(redisHost, redisPort);
 	}
 
+	// RedisTemplate 설정
 	@Bean
 	public RedisTemplate<String, Object> redisTemplate() {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
@@ -31,3 +33,4 @@ public class RedisConfig {
 		return redisTemplate;
 	}
 }
+

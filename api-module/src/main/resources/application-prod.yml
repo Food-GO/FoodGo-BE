@@ -11,25 +11,24 @@ spring:
     password: foodgodatabase
 
   jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
     properties:
-      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
       hibernate:
-        format_sql: true
-        hbm2ddl:
-          auto: update
-        show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: false # hibernate 로그 남길지
 
   data:
     redis:
       host: redis
       port: 6379
 
-security:
-  jwt:
-    secret: aGFuZXVtLWZvb2Rnby1qd3Qtc2VjcmV0LWtleQo=
-    token:
-      access-expiration-time: 86400
-      refresh-expiration-time: 604800
+jwt:
+  secret: aGFuZXVtLWZvb2Rnby1qd3Qtc2VjcmV0LWtleQo=
+  token:
+    access-expiration-time: 86400
+    refresh-expiration-time: 604800
 
 logging:
   level:

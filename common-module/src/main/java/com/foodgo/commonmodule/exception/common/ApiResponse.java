@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 @JsonPropertyOrder({"statusCode", "message", "content"})
 public class ApiResponse<T> {
 
+    // @JsonProperty("isSuccess")
+    // private final Boolean isSuccess;
+
     @JsonProperty("statusCode")
     @NonNull
     private final String statusCode;
@@ -29,11 +32,13 @@ public class ApiResponse<T> {
 
     // 성공한 경우 응답 생성
     public static <T> ApiResponse<T> onSuccess(T content) {
+        // return new ApiResponse<>(true, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), result);
         return new ApiResponse<>(HttpStatus.OK.name(), HttpStatus.OK.getReasonPhrase(), content);
     }
 
     // 실패한 경우 응답 생성
     public static <T> ApiResponse<T> onFailure(String statusCode, String message) {
+        // return new ApiResponse<>(false, code, message, data);
         return new ApiResponse<>(statusCode, message, null);
     }
 

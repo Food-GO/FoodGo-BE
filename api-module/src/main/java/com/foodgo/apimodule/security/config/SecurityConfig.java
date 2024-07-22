@@ -1,5 +1,8 @@
 package com.foodgo.apimodule.security.config;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import com.foodgo.apimodule.security.filter.CustomLoginFilter;
 import com.foodgo.apimodule.security.filter.CustomLogoutHandler;
 import com.foodgo.apimodule.security.filter.JwtAuthenticationFilter;
@@ -10,7 +13,10 @@ import com.foodgo.commonmodule.exception.jwt.JwtAccessDeniedHandler;
 import com.foodgo.commonmodule.exception.jwt.JwtAuthenticationEntryPoint;
 import com.foodgo.commonmodule.security.config.CorsConfig;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -21,22 +27,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
+    private final String[] authUrls = {"/", "/api/v1/users/join/**", "/api/v1/users/login/**", "/api/v1/redis/**"};
+    private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
+        .toArray(String[]::new);
 
     private final AuthenticationConfiguration authenticationConfiguration;
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
 
@@ -46,87 +55,85 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        // CorsConfig 적용
         http
-                .cors(cors -> cors
-                        .configurationSource(CorsConfig.apiConfigurationSource()));
+            .cors(cors -> cors
+                .configurationSource(CorsConfig.apiConfigurationSource()));
 
         // csrf disable
         http
-                .csrf(AbstractHttpConfigurer::disable);
+            .csrf(AbstractHttpConfigurer::disable);
 
         // form 로그인 방식 disable
         http
-                .formLogin(AbstractHttpConfigurer::disable);
+            .formLogin(AbstractHttpConfigurer::disable);
 
         // http basic 인증 방식 disable
         http
-                .httpBasic(AbstractHttpConfigurer::disable);
+            .httpBasic(AbstractHttpConfigurer::disable);
+
+        // session 사용 x, Stateless 서버를 만듦
+        http
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            );
 
         // 경로별 인가 작업
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/api/**").authenticated()
-                        .anyRequest().permitAll()
-                );
+            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                .requestMatchers("/user/**").authenticated()
+                .requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGE")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers(allowedUrls).permitAll()
+                .anyRequest().permitAll()
+            );
 
         // Jwt Filter (with login)
-//        CustomLoginFilter loginFilter = new CustomLoginFilter(
-//                authenticationManager(authenticationConfiguration), jwtUtil, redisUtil
-//        );
-//        loginFilter.setFilterProcessesUrl("/api/v2/auth/login");
-//
-//        http
-//                .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        http
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
-//
-//        http
-//                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
-//
-//        http
-//                .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                        .accessDeniedHandler(jwtAccessDeniedHandler)
-//                );
+        CustomLoginFilter loginFilter = new CustomLoginFilter(
+            authenticationManager(authenticationConfiguration), jwtUtil
+        );
+        loginFilter.setFilterProcessesUrl("/api/v1/users/login");
 
-        // 세션 사용 안함
         http
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+            .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // JwtExceptionFilter 사용
+        http
+            .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
+
+        http
+            .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+
+        // JwtExceptionFilter 사용 x
+        // http
+        // 	.addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
+
+        http
+            .exceptionHandling(exception -> exception
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+            );
 
         // Logout Filter
-//        http
-//                .logout(logout -> logout
-//                        .logoutUrl("/api/v2/auth/logout")
-//                        .addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
-//                        .logoutSuccessHandler((request, response, authentication) ->
-//                                HttpResponseUtil.setSuccessResponse(
-//                                        response,
-//                                        HttpStatus.OK,
-//                                        "로그아웃 성공"
-//                                )
-//                        )
-//                )
-//                .addFilterAfter(new LogoutFilter(
-//                                (request, response, authentication) ->
-//                                        HttpResponseUtil.setSuccessResponse(
-//                                                response,
-//                                                HttpStatus.OK,
-//                                                "로그아웃 성공"
-//                                        ), new CustomLogoutHandler(redisUtil, jwtUtil)),
-//                        JwtAuthenticationFilter.class
-//                );
+        http
+            .logout(logout -> logout
+                .logoutUrl("/api/v1/users/logout")
+                .addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
+                .logoutSuccessHandler((request, response, authentication)
+                    -> HttpResponseUtil.setSuccessResponse(
+                    response,
+                    HttpStatus.OK,
+                    "로그아웃 성공"
+                ))
+            );
 
         return http.build();
     }
-
 }

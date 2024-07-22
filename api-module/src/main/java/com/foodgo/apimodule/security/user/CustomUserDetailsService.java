@@ -1,28 +1,32 @@
 package com.foodgo.apimodule.security.user;
 
-import com.foodgo.commonmodule.exception.jwt.SecurityCustomException;
-import com.foodgo.commonmodule.exception.jwt.SecurityErrorCode;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-//@Service
-//@RequiredArgsConstructor
-//@Slf4j
-//public class CustomUserDetailsService implements UserDetailsService {
-//
-//    private final OrganizationRepository organizationRepository;
-//
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        Organization findOrganization = organizationRepository.findOrganizationByEmail(email)
-//                .orElseThrow(() -> new SecurityCustomException(SecurityErrorCode.TOKEN_ORGANIZATION_NOT_FOND));
-//
-//        log.info("[*] Organization found : " + findOrganization.getEmail());
-//
-//        return new CustomUserDetails(findOrganization);
-//    }
-//}
+import com.foodgo.apimodule.user.exception.UserErrorCode;
+import com.foodgo.apimodule.user.exception.UserExceptionHandler;
+import com.foodgo.coremodule.user.domain.User;
+import com.foodgo.coremodule.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class CustomUserDetailsService implements UserDetailsService {
+
+	private final UserRepository userRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username)
+			.orElseThrow(() -> new UserExceptionHandler(UserErrorCode.USER_NOT_FOUND));
+
+		log.info("[*] User found : " + user.getUsername());
+
+		return new CustomUserDetails(user.getUsername(), user.getPassword(), user.isStaff());
+	}
+}

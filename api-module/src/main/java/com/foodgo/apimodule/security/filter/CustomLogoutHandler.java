@@ -1,7 +1,7 @@
 package com.foodgo.apimodule.security.filter;
 
-import com.foodgo.commonmodule.redis.util.RedisUtil;
 import com.foodgo.commonmodule.exception.jwt.SecurityCustomException;
+import com.foodgo.commonmodule.redis.util.RedisUtil;
 import com.foodgo.commonmodule.exception.jwt.SecurityErrorCode;
 import com.foodgo.apimodule.security.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,6 +28,11 @@ public class CustomLogoutHandler implements LogoutHandler {
 
 			String accessToken = jwtUtil.resolveAccessToken(request);
 
+			// if (redisUtil.hasKey(accessToken)) {
+			// 	log.info("=====================================");
+			// 	throw new SecurityCustomException(TokenErrorCode.INVALID_TOKEN);
+			// }
+
 			redisUtil.saveAsValue(
 				accessToken,
 				"logout",
@@ -35,14 +40,8 @@ public class CustomLogoutHandler implements LogoutHandler {
 				TimeUnit.MILLISECONDS
 			);
 
-			String email = jwtUtil.getEmail(accessToken);
-
 			redisUtil.delete(
-				email + "_refresh_token"
-			);
-
-			redisUtil.delete(
-				email + "_fcm_token"
+				jwtUtil.getUsername(accessToken) + "_refresh_token"
 			);
 
 		} catch (ExpiredJwtException e) {

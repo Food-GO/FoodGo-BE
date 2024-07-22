@@ -1,5 +1,6 @@
 package com.foodgo.commonmodule.exception.jwt;
 
+import com.foodgo.commonmodule.exception.common.ApiResponse;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,9 +22,15 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 		AccessDeniedException accessDeniedException) throws IOException {
-		log.warn("Access Denied: ", accessDeniedException);
+		log.warn("[*] Access Denied: ", accessDeniedException);
 
-		HttpResponseUtil.setErrorResponse(response, HttpStatus.FORBIDDEN,
-			SecurityErrorCode.FORBIDDEN.getErrorResponse());
+		HttpResponseUtil.setErrorResponse(response,
+			HttpStatus.FORBIDDEN,
+			ApiResponse.onFailure(
+				SecurityErrorCode.FORBIDDEN.getCode(),
+				SecurityErrorCode.FORBIDDEN.getMessage(),
+				accessDeniedException.getMessage()
+			)
+		);
 	}
 }
