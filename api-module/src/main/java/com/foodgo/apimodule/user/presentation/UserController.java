@@ -1,7 +1,7 @@
 package com.foodgo.apimodule.user.presentation;
 
-import com.foodgo.apimodule.user.application.UserQueryService;
-import com.foodgo.apimodule.user.application.UserService;
+import com.foodgo.coremodule.user.application.UserQueryService;
+import com.foodgo.coremodule.user.application.UserService;
 import com.foodgo.commonmodule.exception.jwt.dto.JwtDto;
 import com.foodgo.apimodule.user.annotation.UserResolver;
 import com.foodgo.coremodule.user.domain.User;

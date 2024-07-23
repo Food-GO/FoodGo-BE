@@ -1,4 +1,4 @@
-package com.foodgo.apimodule.user.application;
+package com.foodgo.coremodule.user.application;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
