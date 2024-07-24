@@ -3,14 +3,12 @@ package com.foodgo.coremodule.user.application;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.foodgo.apimodule.security.util.JwtUtil;
-import com.foodgo.apimodule.user.exception.UserErrorCode;
-import com.foodgo.apimodule.user.exception.UserExceptionHandler;
-import com.foodgo.commonmodule.exception.jwt.dto.JwtDto;
+import com.foodgo.commonmodule.jwt.dto.JwtDto;
 import com.foodgo.coremodule.user.domain.User;
-import com.foodgo.apimodule.user.dto.request.UserRegisterRequest;
-import com.foodgo.apimodule.user.dto.response.UserRegisterResponse;
+import com.foodgo.coremodule.user.dto.request.UserRegisterRequest;
+import com.foodgo.coremodule.user.dto.response.UserRegisterResponse;
 import com.foodgo.coremodule.user.repository.UserRepository;
+import com.foodgo.coremodule.security.util.JwtUtil;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

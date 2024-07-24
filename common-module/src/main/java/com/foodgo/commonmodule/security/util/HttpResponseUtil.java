@@ -1,7 +1,7 @@
 package com.foodgo.commonmodule.security.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.foodgo.commonmodule.exception.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApiResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

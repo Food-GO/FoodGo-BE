@@ -9,10 +9,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.foodgo.apimodule.security.user.CustomUserDetails;
+import com.foodgo.coremodule.security.user.CustomUserDetails;
 import com.foodgo.coremodule.user.application.UserQueryService;
-import com.foodgo.commonmodule.exception.jwt.SecurityCustomException;
-import com.foodgo.commonmodule.exception.jwt.SecurityErrorCode;
+import com.foodgo.commonmodule.jwt.exception.SecurityCustomException;
+import com.foodgo.commonmodule.jwt.exception.SecurityErrorCode;
 import com.foodgo.coremodule.user.domain.User;
 
 import lombok.RequiredArgsConstructor;

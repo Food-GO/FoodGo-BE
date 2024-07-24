@@ -2,12 +2,12 @@ package com.foodgo.apimodule.user.presentation;
 
 import com.foodgo.coremodule.user.application.UserQueryService;
 import com.foodgo.coremodule.user.application.UserService;
-import com.foodgo.commonmodule.exception.jwt.dto.JwtDto;
+import com.foodgo.commonmodule.jwt.dto.JwtDto;
 import com.foodgo.apimodule.user.annotation.UserResolver;
 import com.foodgo.coremodule.user.domain.User;
-import com.foodgo.apimodule.user.dto.request.UserRegisterRequest;
-import com.foodgo.apimodule.user.dto.response.UserRegisterResponse;
-import com.foodgo.commonmodule.exception.common.ApiResponse;
+import com.foodgo.coremodule.user.dto.request.UserRegisterRequest;
+import com.foodgo.coremodule.user.dto.response.UserRegisterResponse;
+import com.foodgo.commonmodule.common.ApiResponse;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

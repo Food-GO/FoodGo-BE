@@ -5,7 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.foodgo.commonmodule.exception.common.BaseEntity;
+import com.foodgo.commonmodule.common.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
