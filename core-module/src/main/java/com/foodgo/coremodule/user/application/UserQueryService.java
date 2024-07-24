@@ -1,0 +1,23 @@
+package com.foodgo.coremodule.user.application;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.foodgo.apimodule.user.exception.UserErrorCode;
+import com.foodgo.apimodule.user.exception.UserExceptionHandler;
+import com.foodgo.coremodule.user.domain.User;
+import com.foodgo.coremodule.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Service
+public class UserQueryService {
+
+	private final UserRepository userRepository;
+
+	public User findByUserName(String username) {
+		return userRepository.findByUsername(username)
+			.orElseThrow(() -> new UserExceptionHandler(UserErrorCode.USER_NOT_FOUND));
+	}
+}

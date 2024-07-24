@@ -1,7 +1,7 @@
 package com.foodgo.apimodule.security.filter;
 
-import com.foodgo.commonmodule.redis.util.RedisUtil;
 import com.foodgo.commonmodule.exception.jwt.SecurityCustomException;
+import com.foodgo.commonmodule.redis.util.RedisUtil;
 import com.foodgo.commonmodule.exception.jwt.SecurityErrorCode;
 import com.foodgo.apimodule.security.user.CustomUserDetails;
 import com.foodgo.apimodule.security.util.JwtUtil;
@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -31,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		@NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain
 	) throws ServletException, IOException {
-		logger.info("[*] Jwt Filter");
+		log.info("[*] Jwt Filter");
 
 		try {
 			String accessToken = jwtUtil.resolveAccessToken(request);
@@ -44,29 +48,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			// logout 처리된 accessToken
 			if (redisUtil.get(accessToken) != null && redisUtil.get(accessToken).equals("logout")) {
-				logger.info("[*] Logout accessToken");
+				log.info("[*] Logout accessToken");
 				filterChain.doFilter(request, response);
 				return;
 			}
 
-			logger.info("[*] Authorization with Token");
+			log.info("[*] Authorization with Token");
 			authenticateAccessToken(accessToken);
 			filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException e) {
-			logger.warn("[*] case : accessToken Expired");
+			log.warn("[*] case : accessToken Expired");
 			throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED);
+		} catch (InsufficientAuthenticationException e) {
+			log.warn("[*] case : FORBIDDEN");
+			throw new SecurityCustomException(SecurityErrorCode.FORBIDDEN);
 		}
 	}
 
 	private void authenticateAccessToken(String accessToken) {
 		CustomUserDetails userDetails = new CustomUserDetails(
-			jwtUtil.getId(accessToken),
-			jwtUtil.getEmail(accessToken),
+			jwtUtil.getUsername(accessToken),
 			null,
-			jwtUtil.getAuthority(accessToken)
+			jwtUtil.isStaff(accessToken)
 		);
 
-		logger.info("[*] Authority Registration");
+		log.info("[*] Authority Registration");
 
 		// 스프링 시큐리티 인증 토큰 생성
 		Authentication authToken = new UsernamePasswordAuthenticationToken(

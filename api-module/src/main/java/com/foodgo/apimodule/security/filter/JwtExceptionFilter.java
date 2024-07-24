@@ -26,7 +26,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		try {
 			filterChain.doFilter(request, response);
 		} catch (SecurityCustomException e) {
-			log.warn(">>>>> SecurityCustomException : ", e);
+			log.warn("[*] SecurityCustomException : ", e);
 			BaseErrorCode errorCode = e.getErrorCode();
 			ApiResponse<String> errorResponse = ApiResponse.onFailure(
 				errorCode.getCode(),
@@ -39,7 +39,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 				errorResponse
 			);
 		} catch (Exception e) {
-			log.error(">>>>> Exception : ", e);
+			log.error("[*] Exception : ", e);
 			ApiResponse<String> errorResponse = ApiResponse.onFailure(
 				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getCode(),
 				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getMessage(),
