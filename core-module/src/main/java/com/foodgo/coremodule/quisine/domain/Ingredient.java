@@ -1,16 +1,16 @@
 package com.foodgo.coremodule.quisine.domain;
 
+import com.foodgo.commonmodule.common.BaseEntity;
 import com.foodgo.coremodule.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class Ingredient {
+public class Ingredient extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
