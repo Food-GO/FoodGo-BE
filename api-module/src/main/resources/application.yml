@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: prod
   jpa:
     open-in-view: false
     hibernate:
@@ -11,14 +11,14 @@ spring:
   config:
     activate:
       on-profile: local
-    import: application-prod.yml, application-redis.yml
+    import: application-prod.yml, application-redis.yml, application-s3.yml
 
 ---
 spring:
   config:
     activate:
       on-profile: prod
-    import: application-prod.yml, application-redis.yml
+    import: application-prod.yml, application-redis.yml, application-s3.yml
 
 
 server:
