@@ -1,28 +1,19 @@
-version: '3.8'
+version: '3'
+
 services:
+  mysql:
+    image: mysql:latest
+    container_name: foodgo
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root1234!
+      MYSQL_DATABASE: foodgo
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
   redis:
-    container_name: redis
     image: redis:latest
     ports:
       - "6379:6379"
-    networks:
-      - db_network
-    restart: always
-  koa-app:
-    container_name: foodgo-app
-    build: .
-    image: anjeonghoo/food_go
-    environment:
-      - SPRING_DATASOURCE_USERNAME=foodgodatabase
-      - SPRING_DATASOURCE_PASSWORD=foodgodatabase
-      - SPRING_PROFILES_ACTIVE=prod
-    ports:
-      - "80:8080"
-    restart: always
-    depends_on:
-      - redis
-    networks:
-      - db_network
-networks:
-  db_network:
-    driver: bridge

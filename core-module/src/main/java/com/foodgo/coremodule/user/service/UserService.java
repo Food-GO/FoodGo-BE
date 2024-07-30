@@ -5,11 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.foodgo.commonmodule.image.service.AwsS3Service;
-import com.foodgo.commonmodule.jwt.dto.JwtDto;
+import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.user.domain.User;
 import com.foodgo.coremodule.user.dto.request.PasswordUpdateRequest;
 import com.foodgo.coremodule.user.dto.request.UserRegisterRequest;
-import com.foodgo.coremodule.user.dto.request.UserUpdateRequest;
 import com.foodgo.coremodule.user.dto.response.UserRegisterResponse;
 import com.foodgo.coremodule.user.dto.response.UserUpdateResponse;
 import com.foodgo.coremodule.user.repository.UserRepository;

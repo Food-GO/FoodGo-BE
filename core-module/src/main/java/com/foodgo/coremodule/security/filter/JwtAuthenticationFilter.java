@@ -1,8 +1,8 @@
 package com.foodgo.coremodule.security.filter;
 
-import com.foodgo.commonmodule.jwt.exception.SecurityCustomException;
-import com.foodgo.commonmodule.redis.util.RedisUtil;
-import com.foodgo.commonmodule.jwt.exception.SecurityErrorCode;
+import com.foodgo.coremodule.security.jwt.exception.SecurityCustomException;
+import com.foodgo.coremodule.security.jwt.exception.SecurityErrorCode;
+import com.foodgo.coremodule.security.redis.util.RedisUtil;
 import com.foodgo.coremodule.security.user.CustomUserDetails;
 import com.foodgo.coremodule.security.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;

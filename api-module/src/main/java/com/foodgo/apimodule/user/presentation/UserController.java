@@ -1,12 +1,11 @@
 package com.foodgo.apimodule.user.presentation;
 
+import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.user.dto.request.PasswordUpdateRequest;
-import com.foodgo.coremodule.user.dto.request.UserUpdateRequest;
 import com.foodgo.coremodule.user.dto.response.UserDetailGetResponse;
 import com.foodgo.coremodule.user.dto.response.UserUpdateResponse;
 import com.foodgo.coremodule.user.service.UserQueryService;
 import com.foodgo.coremodule.user.service.UserService;
-import com.foodgo.commonmodule.jwt.dto.JwtDto;
 import com.foodgo.apimodule.user.annotation.UserResolver;
 import com.foodgo.coremodule.user.domain.User;
 import com.foodgo.coremodule.user.dto.request.UserRegisterRequest;

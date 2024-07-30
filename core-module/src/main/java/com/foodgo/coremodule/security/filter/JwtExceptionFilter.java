@@ -2,9 +2,10 @@ package com.foodgo.coremodule.security.filter;
 
 import com.foodgo.commonmodule.common.ApiResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
-import com.foodgo.commonmodule.jwt.exception.SecurityCustomException;
-import com.foodgo.commonmodule.jwt.exception.SecurityErrorCode;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
+import com.foodgo.coremodule.security.jwt.exception.SecurityCustomException;
+import com.foodgo.coremodule.security.jwt.exception.SecurityErrorCode;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

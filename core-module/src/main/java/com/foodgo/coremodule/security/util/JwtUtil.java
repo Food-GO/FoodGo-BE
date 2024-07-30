@@ -1,10 +1,10 @@
 package com.foodgo.coremodule.security.util;
 
-import static com.foodgo.commonmodule.jwt.exception.SecurityErrorCode.*;
+import static com.foodgo.coremodule.security.jwt.exception.SecurityErrorCode.*;
 
-import com.foodgo.commonmodule.jwt.exception.SecurityCustomException;
-import com.foodgo.commonmodule.jwt.dto.JwtDto;
-import com.foodgo.commonmodule.redis.util.RedisUtil;
+import com.foodgo.coremodule.security.jwt.dto.JwtDto;
+import com.foodgo.coremodule.security.jwt.exception.SecurityCustomException;
+import com.foodgo.coremodule.security.redis.util.RedisUtil;
 import com.foodgo.coremodule.security.user.CustomUserDetails;
 
 import io.jsonwebtoken.Claims;
@@ -24,17 +24,16 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 @Slf4j
 @Component
 public class JwtUtil {
 
+    private static final String USERNAME = "username";
+    private static final String IS_STAFF = "is_staff";
     private final SecretKey secretKey;
     private final Long accessExpMs;
     private final Long refreshExpMs;
     private final RedisUtil redisUtil;
-    private static final String USERNAME = "username";
-    private static final String IS_STAFF = "is_staff";
 
     public JwtUtil(
         @Value("${jwt.secret}") String secret,

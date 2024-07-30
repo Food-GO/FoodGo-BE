@@ -7,10 +7,10 @@ import com.foodgo.coremodule.security.filter.CustomLoginFilter;
 import com.foodgo.coremodule.security.filter.CustomLogoutHandler;
 import com.foodgo.coremodule.security.filter.JwtAuthenticationFilter;
 import com.foodgo.coremodule.security.filter.JwtExceptionFilter;
+import com.foodgo.coremodule.security.jwt.exception.JwtAccessDeniedHandler;
+import com.foodgo.coremodule.security.jwt.exception.JwtAuthenticationEntryPoint;
+import com.foodgo.coremodule.security.redis.util.RedisUtil;
 import com.foodgo.coremodule.security.util.JwtUtil;
-import com.foodgo.commonmodule.redis.util.RedisUtil;
-import com.foodgo.commonmodule.jwt.exception.JwtAccessDeniedHandler;
-import com.foodgo.commonmodule.jwt.exception.JwtAuthenticationEntryPoint;
 import com.foodgo.commonmodule.security.config.CorsConfig;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
 
