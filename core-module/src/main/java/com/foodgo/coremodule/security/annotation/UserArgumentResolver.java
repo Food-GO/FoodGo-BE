@@ -1,4 +1,4 @@
-package com.foodgo.apimodule.user.annotation;
+package com.foodgo.coremodule.security.annotation;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,8 +12,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.foodgo.coremodule.security.jwt.exception.SecurityCustomException;
 import com.foodgo.coremodule.security.jwt.exception.SecurityErrorCode;
 import com.foodgo.coremodule.security.user.CustomUserDetails;
-import com.foodgo.coremodule.user.service.UserQueryService;
 import com.foodgo.coremodule.user.domain.User;
+import com.foodgo.coremodule.user.service.UserQueryService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,12 +1,12 @@
 package com.foodgo.apimodule.user.presentation;
 
+import com.foodgo.coremodule.security.annotation.UserResolver;
 import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.user.dto.request.PasswordUpdateRequest;
 import com.foodgo.coremodule.user.dto.response.UserDetailGetResponse;
 import com.foodgo.coremodule.user.dto.response.UserUpdateResponse;
 import com.foodgo.coremodule.user.service.UserQueryService;
 import com.foodgo.coremodule.user.service.UserService;
-import com.foodgo.apimodule.user.annotation.UserResolver;
 import com.foodgo.coremodule.user.domain.User;
 import com.foodgo.coremodule.user.dto.request.UserRegisterRequest;
 import com.foodgo.coremodule.user.dto.response.UserRegisterResponse;
@@ -15,6 +15,8 @@ import com.foodgo.commonmodule.common.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/users")
