@@ -143,8 +143,8 @@ public class JwtUtil {
         return getClaims(token).get(USERNAME, String.class);
     }
 
-    public boolean isStaff(String token) {
-        return getClaims(token).get(IS_STAFF, Boolean.class);
+    public String isStaff(String token) {
+        return getClaims(token).get(IS_STAFF, String.class);
     }
 
     public Boolean isExpired(String token) {

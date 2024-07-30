@@ -12,22 +12,22 @@ public class CustomUserDetails implements UserDetails {
 
     private final String email;
     private final String password;
-    private final boolean isStaff;
+    private final String isStaff;
 
-    public CustomUserDetails(String email, String password, boolean isStaff) {
+    public CustomUserDetails(String email, String password, String isStaff) {
         this.email = email;
         this.password = password;
         this.isStaff = isStaff;
     }
 
-    public boolean getStaff() {
+    public String getStaff() {
         return isStaff;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if (isStaff) {
+        if (isStaff.equals("ADMIN")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

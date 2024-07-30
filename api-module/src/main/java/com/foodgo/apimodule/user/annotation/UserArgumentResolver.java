@@ -10,7 +10,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.foodgo.coremodule.security.user.CustomUserDetails;
-import com.foodgo.coremodule.user.application.UserQueryService;
+import com.foodgo.coremodule.user.service.UserQueryService;
 import com.foodgo.commonmodule.jwt.exception.SecurityCustomException;
 import com.foodgo.commonmodule.jwt.exception.SecurityErrorCode;
 import com.foodgo.coremodule.user.domain.User;
