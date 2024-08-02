@@ -1,16 +1,18 @@
-package com.foodgo.commonmodule.jwt.exception;
+package com.foodgo.coremodule.security.jwt.exception;
 
-import com.foodgo.commonmodule.common.ApiResponse;
-import com.foodgo.commonmodule.security.util.HttpResponseUtil;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.security.util.HttpResponseUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 사용자가 인증되지 않은 상태에서 접근하려고 할 때 발생하는 예외 처리

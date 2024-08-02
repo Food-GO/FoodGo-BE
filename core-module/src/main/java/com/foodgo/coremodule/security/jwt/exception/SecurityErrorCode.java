@@ -1,10 +1,12 @@
-package com.foodgo.commonmodule.jwt.exception;
+package com.foodgo.coremodule.security.jwt.exception;
+
+import org.springframework.http.HttpStatus;
 
 import com.foodgo.commonmodule.common.ApiResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor

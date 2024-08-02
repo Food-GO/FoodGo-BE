@@ -1,6 +1,8 @@
 package com.foodgo.coremodule.user.dto.request;
 
 import com.foodgo.coremodule.user.domain.User;
+import com.foodgo.coremodule.user.enums.RoleType;
+import com.foodgo.coremodule.user.enums.UserStatus;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -21,6 +23,8 @@ public record UserRegisterRequest(
 		return User.builder()
 			.username(username)
 			.password(encodedPw)
+			.roleType(RoleType.USER)
+			.userStatus(UserStatus.ACTIVE)
 			.build();
 	}
 }

@@ -1,9 +1,9 @@
 package com.foodgo.coremodule.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.security.user.CustomUserDetails;
 import com.foodgo.commonmodule.common.ApiResponse;
-import com.foodgo.commonmodule.jwt.dto.JwtDto;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
 import com.foodgo.coremodule.security.util.JwtUtil;
 

@@ -27,6 +27,7 @@ public class QuisineSaveUseCase {
         quisineQueryService.saveIngredient(ingredient);
     }
 
+
     public void deleteIngredient(Long ingredientId) {
 
         quisineQueryService.deleteIngredient(ingredientId);

@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
+@Table(name = "ingredients")
 public class Ingredient extends BaseEntity {
 
     @Id
@@ -17,11 +18,19 @@ public class Ingredient extends BaseEntity {
     @Column(name = "ingredient_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @Column(name = "ingredient_name", nullable = false)
+    private String name;
+
+    @Column(name = "ingredient_quantity")
+    private String quantity;
+
+    @Column(name = "ingredient_image_url")
+    private String imageUrl;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
-    private String name;
-    private String quantity;
-    private String imageUrl;
 }
+

@@ -1,4 +1,4 @@
-package com.foodgo.commonmodule.jwt.exception;
+package com.foodgo.coremodule.security.jwt.exception;
 
 import com.foodgo.commonmodule.common.BaseErrorCode;
 import com.foodgo.commonmodule.common.CustomException;

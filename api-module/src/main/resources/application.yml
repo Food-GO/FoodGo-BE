@@ -1,10 +1,11 @@
 spring:
   profiles:
-    active: prod
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: none
+    active: local
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 
 ---
 spring:

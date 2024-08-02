@@ -27,6 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		log.info("[*] User found : " + user.getUsername());
 
-		return new CustomUserDetails(user.getUsername(), user.getPassword(), user.isStaff());
+		return new CustomUserDetails(user.getUsername(), user.getPassword(), user.getRoleType().toString());
 	}
 }

@@ -1,4 +1,4 @@
-package com.foodgo.commonmodule.jwt.dto;
+package com.foodgo.coremodule.security.jwt.dto;
 
 public record JwtDto(
 	String accessToken,

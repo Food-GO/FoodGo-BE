@@ -1,4 +1,4 @@
-package com.foodgo.apimodule.user.annotation;
+package com.foodgo.coremodule.security.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,13 +1,11 @@
-package com.foodgo.commonmodule.redis.util;
+package com.foodgo.coremodule.security.redis.util;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

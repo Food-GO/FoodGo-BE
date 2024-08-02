@@ -2,15 +2,18 @@ package com.foodgo.coremodule.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.foodgo.commonmodule.common.BaseEntity;
+import com.foodgo.coremodule.user.enums.RoleType;
+import com.foodgo.coremodule.user.enums.UserStatus;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 @Builder
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 @Entity
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
@@ -18,14 +21,37 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "user_username", nullable = false, unique = true)
     private String username;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password", nullable = false)
+    @Column(name = "user_password", nullable = false)
     private String password;
 
-    @Column(name = "is_staff", nullable = false)
-    @ColumnDefault("false")
-    private boolean isStaff;
+    @Column(name = "user_image_url")
+    private String imageUrl;
+
+    @Column(name = "user_roletype", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
+
+    @Column(name = "user_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
+
+    public void deactivate() {
+        this.userStatus = UserStatus.INACTIVE;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password == null ? this.password : password;
+    }
+
+    public void update(String imageUrl) {
+        this.imageUrl = imageUrl == null ? this.imageUrl : imageUrl;
+    }
 }
