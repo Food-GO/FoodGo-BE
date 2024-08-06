@@ -1,6 +1,8 @@
 package com.foodgo.coremodule.user.dto.response;
 
 import com.foodgo.coremodule.user.domain.User;
+import com.foodgo.coremodule.user.enums.DiseaseType;
+import com.foodgo.coremodule.user.enums.UsageType;
 
 import lombok.Builder;
 
@@ -9,7 +11,10 @@ public record UserRegisterResponse(
 	Long id,
 	String username,
 	String nickname,
-	String imageUrl
+	String imageUrl,
+	UsageType usageType,
+	DiseaseType diseaseType,
+	String lifeStyle
 ) {
 
 	public static UserRegisterResponse from(User user) {
@@ -18,6 +23,9 @@ public record UserRegisterResponse(
 			.username(user.getUsername())
 			.nickname(user.getNickname())
 			.imageUrl(user.getImageUrl())
+			.usageType(user.getUsageType())
+			.diseaseType(user.getDiseaseType())
+			.lifeStyle(user.getLifeStyle())
 			.build();
 	}
 }

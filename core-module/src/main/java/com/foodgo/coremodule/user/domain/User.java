@@ -2,7 +2,9 @@ package com.foodgo.coremodule.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.foodgo.commonmodule.common.BaseEntity;
+import com.foodgo.coremodule.user.enums.DiseaseType;
 import com.foodgo.coremodule.user.enums.RoleType;
+import com.foodgo.coremodule.user.enums.UsageType;
 import com.foodgo.coremodule.user.enums.UserStatus;
 
 import jakarta.persistence.*;
@@ -33,10 +35,20 @@ public class User extends BaseEntity {
     @Column(name = "user_image_url")
     private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_usagetype", nullable = false)
+    private UsageType usageType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_diseasetype", nullable = false)
+    private DiseaseType diseaseType;
+
+    @Column(name = "user_lifestyle", nullable = false)
+    private String lifeStyle;
+
     @Column(name = "user_roletype", nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
-
 
     @Column(name = "user_status", nullable = false)
     @Enumerated(EnumType.STRING)
