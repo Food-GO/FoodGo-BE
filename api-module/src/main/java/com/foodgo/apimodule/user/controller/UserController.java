@@ -1,4 +1,4 @@
-package com.foodgo.apimodule.user.presentation;
+package com.foodgo.apimodule.user.controller;
 
 import com.foodgo.coremodule.security.annotation.UserResolver;
 import com.foodgo.coremodule.security.jwt.dto.JwtDto;
