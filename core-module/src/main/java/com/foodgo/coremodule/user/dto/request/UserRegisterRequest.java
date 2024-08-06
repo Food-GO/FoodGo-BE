@@ -16,13 +16,17 @@ public record UserRegisterRequest(
 	@NotBlank(message = "[ERROR] 비밀번호 입력은 필수 입니다.")
 	@Size(min = 8, message = "[ERROR] 비밀번호는 최소 8자리 이이어야 합니다.")
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,64}$", message = "[ERROR] 비밀번호는 8자 이상, 64자 이하이며 특수문자 한 개를 포함해야 합니다.")
-	String password
+	String password,
+
+	@NotBlank(message = "[ERROR] 닉네임 입력은 필수입니다.")
+	String nickname
 ) {
 
 	public User toEntity(String encodedPw) {
 		return User.builder()
 			.username(username)
 			.password(encodedPw)
+			.nickname(nickname)
 			.roleType(RoleType.USER)
 			.userStatus(UserStatus.ACTIVE)
 			.build();
