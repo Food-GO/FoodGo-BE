@@ -92,7 +92,7 @@ public class SecurityConfig {
                 .requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGE")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers(allowedUrls).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             );
 
         // Jwt Filter (with login)

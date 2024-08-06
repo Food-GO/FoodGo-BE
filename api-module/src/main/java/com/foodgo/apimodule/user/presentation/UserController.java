@@ -3,6 +3,7 @@ package com.foodgo.apimodule.user.presentation;
 import com.foodgo.coremodule.security.annotation.UserResolver;
 import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.user.dto.request.PasswordUpdateRequest;
+import com.foodgo.coremodule.user.dto.request.UserUpdateRequest;
 import com.foodgo.coremodule.user.dto.response.UserDetailGetResponse;
 import com.foodgo.coremodule.user.dto.response.UserUpdateResponse;
 import com.foodgo.coremodule.user.service.UserQueryService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +48,16 @@ public class UserController {
         @RequestPart(name = "profileImage", required = false) MultipartFile file
     ) {
         return ApiResponse.onSuccess(userService.register(request, file));
+    }
+
+    @GetMapping("/username")
+    public ApiResponse<Boolean> checkUsername(@RequestParam String username) {
+        return ApiResponse.onSuccess(userQueryService.checkUsername(username));
+    }
+
+    @GetMapping("/nickname")
+    public ApiResponse<Boolean> checkNickname(@RequestParam String nickname) {
+        return ApiResponse.onSuccess(userQueryService.checkNickname(nickname));
     }
 
     @GetMapping("/reissue")
@@ -70,8 +82,9 @@ public class UserController {
     @PatchMapping(value = "/me", consumes = "multipart/form-data")
     public ApiResponse<UserUpdateResponse> updateMyUser(
         @UserResolver User user,
+        @RequestPart @Valid UserUpdateRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile file) {
-        return ApiResponse.onSuccess(userService.updateMyUser(user, file));
+        return ApiResponse.onSuccess(userService.updateMyUser(user, request, file));
     }
 
     @DeleteMapping("/me")
