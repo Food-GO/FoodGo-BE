@@ -3,6 +3,7 @@ package com.foodgo.apimodule.user.presentation;
 import com.foodgo.coremodule.security.annotation.UserResolver;
 import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.user.dto.request.PasswordUpdateRequest;
+import com.foodgo.coremodule.user.dto.request.UserUpdateRequest;
 import com.foodgo.coremodule.user.dto.response.UserDetailGetResponse;
 import com.foodgo.coremodule.user.dto.response.UserUpdateResponse;
 import com.foodgo.coremodule.user.service.UserQueryService;
@@ -81,8 +82,9 @@ public class UserController {
     @PatchMapping(value = "/me", consumes = "multipart/form-data")
     public ApiResponse<UserUpdateResponse> updateMyUser(
         @UserResolver User user,
+        @RequestPart @Valid UserUpdateRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile file) {
-        return ApiResponse.onSuccess(userService.updateMyUser(user, file));
+        return ApiResponse.onSuccess(userService.updateMyUser(user, request, file));
     }
 
     @DeleteMapping("/me")

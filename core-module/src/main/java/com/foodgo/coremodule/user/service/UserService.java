@@ -9,8 +9,11 @@ import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.user.domain.User;
 import com.foodgo.coremodule.user.dto.request.PasswordUpdateRequest;
 import com.foodgo.coremodule.user.dto.request.UserRegisterRequest;
+import com.foodgo.coremodule.user.dto.request.UserUpdateRequest;
 import com.foodgo.coremodule.user.dto.response.UserRegisterResponse;
 import com.foodgo.coremodule.user.dto.response.UserUpdateResponse;
+import com.foodgo.coremodule.user.enums.DiseaseType;
+import com.foodgo.coremodule.user.enums.UsageType;
 import com.foodgo.coremodule.user.repository.UserRepository;
 import com.foodgo.coremodule.security.util.JwtUtil;
 
@@ -46,12 +49,18 @@ public class UserService {
 		user.updatePassword(encodedNewPassword);
 	}
 
-	public UserUpdateResponse updateMyUser(User user, MultipartFile file) {
+	public UserUpdateResponse updateMyUser(User user, UserUpdateRequest request, MultipartFile file) {
 		String imageUrl = null;
 		if (file != null && !file.isEmpty()) {
 			imageUrl = awsS3Service.uploadFile(file);
 		}
-		user.update(imageUrl);
+		user.update(
+			imageUrl,
+			request.nickname(),
+			request.usageType(),
+			request.diseaseType(),
+			request.lifeStyle(),
+			request.allergy());
 		return UserUpdateResponse.from(user);
 	}
 

@@ -30,7 +30,10 @@ public record UserRegisterRequest(
 	DiseaseType diseaseType,
 
 	@NotNull
-	String lifeStyle
+	String lifeStyle,
+
+	@NotNull
+	String allergy
 
 ) {
 
@@ -42,6 +45,7 @@ public record UserRegisterRequest(
 			.usageType(usageType)
 			.diseaseType(diseaseType)
 			.lifeStyle(lifeStyle)
+			.allergy(allergy)
 			.roleType(RoleType.USER)
 			.userStatus(UserStatus.ACTIVE)
 			.build();

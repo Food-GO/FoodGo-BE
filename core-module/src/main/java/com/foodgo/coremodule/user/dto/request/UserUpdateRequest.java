@@ -7,6 +7,7 @@ public record UserUpdateRequest(
 	String nickname,
 	UsageType usageType,
 	DiseaseType diseaseType,
-	String lifestyle
+	String lifeStyle,
+	String allergy
 ) {
 }

@@ -14,7 +14,8 @@ public record UserRegisterResponse(
 	String imageUrl,
 	UsageType usageType,
 	DiseaseType diseaseType,
-	String lifeStyle
+	String lifeStyle,
+	String allergy
 ) {
 
 	public static UserRegisterResponse from(User user) {
@@ -26,6 +27,7 @@ public record UserRegisterResponse(
 			.usageType(user.getUsageType())
 			.diseaseType(user.getDiseaseType())
 			.lifeStyle(user.getLifeStyle())
+			.allergy(user.getAllergy())
 			.build();
 	}
 }

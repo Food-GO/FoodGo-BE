@@ -13,7 +13,8 @@ public record UserUpdateResponse(
 	String imageUrl,
 	UsageType usageType,
 	DiseaseType diseaseType,
-	String lifeStyle
+	String lifeStyle,
+	String allergy
 ) {
 
 	public static UserUpdateResponse from(User user) {
@@ -24,6 +25,7 @@ public record UserUpdateResponse(
 			.usageType(user.getUsageType())
 			.diseaseType(user.getDiseaseType())
 			.lifeStyle(user.getLifeStyle())
+			.allergy(user.getAllergy())
 			.build();
 	}
 }
