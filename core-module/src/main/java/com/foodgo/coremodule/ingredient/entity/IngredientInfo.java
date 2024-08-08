@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
-@Table(name = "ingredients")
-public class Ingredient extends BaseEntity {
+@Table(name = "ingredientsInfo")
+public class IngredientInfo extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,9 @@ public class Ingredient extends BaseEntity {
 
 	@Column(name = "ingredient_name", nullable = false)
 	private String ingredientName;
+
+	@Column(name = "ingredient_Group", nullable = false)
+	private String ingredientGroup;
 
 	@Column(name = "nutr_cont1")
 	private double nutrCont1; // 열량(kcal)(1회제공량당)
