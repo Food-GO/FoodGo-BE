@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IngredientFindUseCase {
 
-    @Value("${spring.openapi.key.recipe}")
+    @Value("${spring.openapi.key.ingredient}")
     private String apiKey;
 
     public IngredientGetResponse.Row getIngredient(User user, IngredientGetRequest request) throws URISyntaxException {
