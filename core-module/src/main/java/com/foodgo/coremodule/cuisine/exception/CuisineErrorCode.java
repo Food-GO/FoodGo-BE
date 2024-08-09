@@ -1,4 +1,4 @@
-package com.foodgo.coremodule.quisine.exception;
+package com.foodgo.coremodule.cuisine.exception;
 
 import com.foodgo.commonmodule.common.ApiResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum QuisineErrorCode implements BaseErrorCode {
+public enum CuisineErrorCode implements BaseErrorCode {
 
     NO_INGREDIENT_INFO(HttpStatus.BAD_REQUEST, "2000", "식재료가 존재하지 않습니다.");
 

@@ -1,4 +1,4 @@
-package com.foodgo.coremodule.quisine.domain;
+package com.foodgo.coremodule.cuisine.domain;
 
 import com.foodgo.commonmodule.common.BaseEntity;
 import com.foodgo.coremodule.user.domain.User;

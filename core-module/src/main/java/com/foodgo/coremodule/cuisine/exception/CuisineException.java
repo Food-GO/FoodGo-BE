@@ -1,21 +1,21 @@
-package com.foodgo.coremodule.quisine.exception;
+package com.foodgo.coremodule.cuisine.exception;
 
 import com.foodgo.commonmodule.common.BaseErrorCode;
 import lombok.Getter;
 
 @Getter
-public class QuisineException extends RuntimeException {
+public class CuisineException extends RuntimeException {
 
     private final BaseErrorCode errorCode;
 
     private final Throwable cause;
 
-    public QuisineException(BaseErrorCode errorCode) {
+    public CuisineException(BaseErrorCode errorCode) {
         this.errorCode = errorCode;
         this.cause = null;
     }
 
-    public QuisineException(BaseErrorCode errorCode, Throwable cause) {
+    public CuisineException(BaseErrorCode errorCode, Throwable cause) {
         this.errorCode = errorCode;
         this.cause = cause;
     }

@@ -1,6 +1,6 @@
-package com.foodgo.coremodule.quisine.repository;
+package com.foodgo.coremodule.cuisine.repository;
 
-import com.foodgo.coremodule.quisine.domain.Ingredient;
+import com.foodgo.coremodule.cuisine.domain.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
