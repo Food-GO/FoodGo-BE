@@ -1,24 +1,24 @@
 spring:
   profiles:
     active: local
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: none
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 ---
 spring:
   config:
     activate:
       on-profile: local
-    import: application-prod.yml, application-redis.yml
+    import: application-prod.yml, application-redis-local.yml, application-s3.yml
 
 ---
 spring:
   config:
     activate:
       on-profile: prod
-    import: application-prod.yml, application-redis.yml
+    import: application-prod.yml, application-redis-prod.yml, application-s3.yml
 
 
 server:

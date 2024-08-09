@@ -1,41 +1,80 @@
 package com.foodgo.coremodule.user.domain;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.foodgo.commonmodule.exception.common.BaseEntity;
+import com.foodgo.commonmodule.common.BaseEntity;
+import com.foodgo.coremodule.user.enums.DiseaseType;
+import com.foodgo.coremodule.user.enums.RoleType;
+import com.foodgo.coremodule.user.enums.UsageType;
+import com.foodgo.coremodule.user.enums.UserStatus;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter
 @Builder
-@DynamicInsert
-@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name = "users")
+@Getter
 @Entity
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "user_username", nullable = false, unique = true)
     private String username;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password", nullable = false)
+    @Column(name = "user_password", nullable = false)
     private String password;
 
-    @Column(name = "is_staff", nullable = false)
-    @ColumnDefault("false")
-    private boolean isStaff;
+    @Column(name = "user_nickname", nullable = false)
+    private String nickname;
+
+    @Column(name = "user_image_url")
+    private String imageUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_usagetype", nullable = false)
+    private UsageType usageType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_diseasetype", nullable = false)
+    private DiseaseType diseaseType;
+
+    @Column(name = "user_lifestyle", nullable = false)
+    private String lifeStyle;
+
+    @Column(name = "user_allergy", nullable = false)
+    private String allergy;
+
+    @Column(name = "user_roletype", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
+    @Column(name = "user_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
+
+    public void deactivate() {
+        this.userStatus = UserStatus.INACTIVE;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password == null ? this.password : password;
+    }
+
+    public void update(String imageUrl, String nickname, UsageType usageType, DiseaseType diseaseType, String lifeStyle, String allergy) {
+        this.nickname = nickname == null ? this.nickname : nickname;
+        this.imageUrl = imageUrl == null ? this.imageUrl : imageUrl;
+        this.usageType = usageType == null ? this.usageType : usageType;
+        this.diseaseType = diseaseType == null ? this.diseaseType : diseaseType;
+        this.lifeStyle = lifeStyle == null ? this.lifeStyle : lifeStyle;
+        this.allergy = allergy == null ? this.allergy : allergy;
+    }
 }
