@@ -6,6 +6,8 @@ import com.foodgo.apimodule.ingredient.dto.IngredientInfo;
 import com.foodgo.apimodule.ingredient.mapper.IngredientMapper;
 import com.foodgo.coremodule.cuisine.domain.Ingredient;
 import com.foodgo.coremodule.cuisine.domain.TestType;
+import com.foodgo.coremodule.cuisine.exception.CuisineErrorCode;
+import com.foodgo.coremodule.cuisine.exception.CuisineException;
 import com.foodgo.coremodule.cuisine.service.CuisineQueryService;
 import com.foodgo.coremodule.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +61,7 @@ public class CuisineFindUseCase {
                 .retrieve()
                 .bodyToMono(RecipeDTO.TotalResponse.class)
                 .doOnError(error -> {
-                    throw new RuntimeException("API 호출 오류: " + error.getMessage());
+                    throw new CuisineException(CuisineErrorCode.OPEN_API_INFO_ERROR);
                 })
                 .block();
 
