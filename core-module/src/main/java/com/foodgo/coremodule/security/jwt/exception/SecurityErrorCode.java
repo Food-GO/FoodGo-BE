@@ -2,7 +2,7 @@ package com.foodgo.coremodule.security.jwt.exception;
 
 import org.springframework.http.HttpStatus;
 
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public enum SecurityErrorCode implements BaseErrorCode {
 	private final String message;
 
 	@Override
-	public ApiResponse<Void> getErrorResponse() {
-		return ApiResponse.onFailure(code, message);
+	public ApplicationResponse<Void> getErrorResponse() {
+		return ApplicationResponse.onFailure(code, message);
 	}
 }

@@ -7,7 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
 		HttpResponseUtil.setErrorResponse(response,
 			HttpStatus.FORBIDDEN,
-			ApiResponse.onFailure(
+			ApplicationResponse.onFailure(
 				SecurityErrorCode.FORBIDDEN.getCode(),
 				SecurityErrorCode.FORBIDDEN.getMessage(),
 				accessDeniedException.getMessage()

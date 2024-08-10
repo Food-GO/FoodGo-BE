@@ -1,6 +1,6 @@
 package com.foodgo.coremodule.cuisine.exception;
 
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public enum CuisineErrorCode implements BaseErrorCode {
 
 
     @Override
-    public ApiResponse<Void> getErrorResponse() {
+    public ApplicationResponse<Void> getErrorResponse() {
         return null;
     }
 }

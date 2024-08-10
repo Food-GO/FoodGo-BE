@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.coremodule.ingredient.dto.request.IngredientGetRequest;
 import com.foodgo.coremodule.ingredient.dto.response.IngredientGetResponse;
 import com.foodgo.coremodule.security.annotation.UserResolver;
@@ -27,10 +27,10 @@ public class IngredientController {
 	private final IngredientFindUseCase ingredientFindUseCase;
 
 	@PostMapping("")
-	public ApiResponse<IngredientGetResponse.Row> getIngredientInfo(
+	public ApplicationResponse<IngredientGetResponse.Row> getIngredientInfo(
 		@UserResolver User user,
 		@RequestBody @Valid IngredientGetRequest request
 	) throws URISyntaxException {
-		return ApiResponse.onSuccess(ingredientFindUseCase.getIngredient(user, request));
+		return ApplicationResponse.onSuccess(ingredientFindUseCase.getIngredient(user, request));
 	}
 }

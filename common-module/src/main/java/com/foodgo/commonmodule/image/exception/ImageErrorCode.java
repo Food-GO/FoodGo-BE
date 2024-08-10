@@ -1,6 +1,6 @@
 package com.foodgo.commonmodule.image.exception;
 
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public enum ImageErrorCode implements BaseErrorCode {
 
 
     @Override
-    public ApiResponse<Void> getErrorResponse() {
+    public ApplicationResponse<Void> getErrorResponse() {
         return null;
     }
 }
