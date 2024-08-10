@@ -1,8 +1,8 @@
-package com.foodgo.apimodule.cuisine.mapper;
+package com.foodgo.apimodule.ingredient.mapper;
 
-import com.foodgo.apimodule.cuisine.dto.IngredientAddReq;
-import com.foodgo.apimodule.cuisine.dto.IngredientInfo;
-import com.foodgo.coremodule.quisine.domain.Ingredient;
+import com.foodgo.apimodule.ingredient.dto.IngredientAddReq;
+import com.foodgo.apimodule.ingredient.dto.IngredientInfo;
+import com.foodgo.coremodule.cuisine.domain.Ingredient;
 import com.foodgo.coremodule.user.domain.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

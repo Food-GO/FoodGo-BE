@@ -1,4 +1,4 @@
-package com.foodgo.apimodule.cuisine.dto;
+package com.foodgo.apimodule.ingredient.dto;
 
 public record IngredientAddReq(
         String name,

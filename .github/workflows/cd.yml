@@ -2,7 +2,7 @@ name: Backend CD # actions 이름
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ feature/#8 ]
 
 jobs:
   deploy:
@@ -29,6 +29,13 @@ jobs:
           cd ./common-module/src/main/resources
           touch ./application-s3.yml
           echo "${{ secrets.APPLICATION_S3 }}" > ./application-s3.yml
+        shell: bash
+
+      - name: make application-openapi-key yml file
+        run: |
+          cd ./api-module/src/main/resources
+          touch ./application-openapi-key.yml
+          echo "${{ secrets.APPLICATION_OPENAPI }}" > ./application-openapi-key.yml
         shell: bash
 
       - name: Gradlew 권한 부여

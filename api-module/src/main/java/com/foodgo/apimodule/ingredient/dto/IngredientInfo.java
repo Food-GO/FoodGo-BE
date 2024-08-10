@@ -1,4 +1,4 @@
-package com.foodgo.apimodule.cuisine.dto;
+package com.foodgo.apimodule.ingredient.dto;
 
 public record IngredientInfo(
         Long ingredientId,
