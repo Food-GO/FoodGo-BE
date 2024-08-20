@@ -2,11 +2,22 @@ package com.foodgo.apimodule.community.presentation;
 
 import com.foodgo.apimodule.community.application.FriendFindUseCase;
 import com.foodgo.apimodule.community.application.FriendSaveUseCase;
+import com.foodgo.apimodule.community.dto.FriendSearchList;
+import com.foodgo.commonmodule.common.ApplicationResponse;
+import com.foodgo.coremodule.security.annotation.UserResolver;
+import com.foodgo.coremodule.user.domain.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,8 +30,45 @@ public class CommunityController {
     private final FriendSaveUseCase friendSaveUseCase;
 
     // 친구 목록 조회 - (공동 목표까지 포함)
+    @GetMapping("/friend")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "친구 목록 조회 - 공동 목표까지 포함",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "친구 목록 조회 API", description = "친구 목록 조회 API 입니다.")
+    public ApplicationResponse<List<FriendSearchList>> findFriendList(
+            @UserResolver User user
+    ) {
 
-    // 아이디로 친구 검색
+        List<FriendSearchList> friendSearchLists = friendFindUseCase.findFriendList(user);
+        return ApplicationResponse.onSuccess(friendSearchLists);
+    }
+
+    // 닉네임으로 친구 검색
+    @GetMapping("/friend/{nickname}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "친구 검색 - 닉네임",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "친구 검색 API", description = "친구 검색 API 입니다. - 닉네임")
+    public ApplicationResponse<List<FriendSearchList>> findFriendName(
+            @UserResolver User user,
+            @PathVariable String nickname
+    ) {
+
+        List<FriendSearchList> searchLists = friendFindUseCase.findFriendName(user, nickname);
+        return ApplicationResponse.onSuccess(searchLists);
+    }
 
     // 친구 신청하기
 
