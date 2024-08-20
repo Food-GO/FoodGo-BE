@@ -28,9 +28,5 @@ public class ChallengeDetail extends BaseEntity {
 
     @Column(name = "target_value", nullable = false)
     private Integer targetValue;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "friendship_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Friendship friendship;
 }
 
