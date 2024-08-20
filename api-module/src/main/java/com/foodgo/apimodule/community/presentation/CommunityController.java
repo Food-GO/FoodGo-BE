@@ -69,6 +69,29 @@ public class CommunityController {
     }
 
     // 친구 신청하기
+    @PostMapping("/friend/request/{friendId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "친구 요청",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "친구 요청 API", description = "친구 요청 API 입니다.")
+    public ApplicationResponse<String> requestFriend(
+            @UserResolver User user,
+            @PathVariable Long friendId
+    ) {
+
+        Boolean result = friendSaveUseCase.requestFriend(user, friendId);
+        if (result) {
+            return ApplicationResponse.onSuccess("친구 신청하였습니다.");
+        } else {
+            return ApplicationResponse.onFailure("400", "이미 신청한 친구입니다.");
+        }
+    }
 
     // 친구 삭제하기
 

@@ -30,6 +30,11 @@ public class UserQueryService {
                 .orElseThrow(() -> new UserExceptionHandler(UserErrorCode.USER_NOT_FOUND));
     }
 
+    public User findByUserId(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserExceptionHandler(UserErrorCode.USER_NOT_FOUND));
+    }
+
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
