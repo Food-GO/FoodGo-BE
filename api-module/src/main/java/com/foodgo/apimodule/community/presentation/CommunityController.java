@@ -94,6 +94,25 @@ public class CommunityController {
     }
 
     // 친구 삭제하기
+    @DeleteMapping("/friend/request/{friendId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "친구 삭제",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "친구 삭제 API", description = "친구 삭제 API 입니다.")
+    public ApplicationResponse<String> deleteFriendship(
+            @UserResolver User user,
+            @PathVariable Long friendId
+    ) {
+
+        friendSaveUseCase.deleteFriend(user, friendId);
+        return ApplicationResponse.onSuccess("친구 관계가 삭제되었습니다.");
+    }
 
     // 친구 요청 리스트
     @GetMapping("/friend/request")

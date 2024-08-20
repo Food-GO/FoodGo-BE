@@ -36,4 +36,8 @@ public class FriendQueryService {
     public void save(Friendship friendship) {
         friendShipRepository.save(friendship);
     }
+
+    public void delete(Friendship friendship) {
+        friendShipRepository.delete(friendship);
+    }
 }

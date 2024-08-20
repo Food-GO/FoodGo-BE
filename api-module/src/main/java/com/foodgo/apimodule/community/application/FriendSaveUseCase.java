@@ -1,5 +1,7 @@
 package com.foodgo.apimodule.community.application;
 
+import com.foodgo.commonmodule.user.exception.UserErrorCode;
+import com.foodgo.commonmodule.user.exception.UserExceptionHandler;
 import com.foodgo.coremodule.community.domain.Friendship;
 import com.foodgo.coremodule.community.service.FriendQueryService;
 import com.foodgo.coremodule.user.domain.User;
@@ -36,4 +38,16 @@ public class FriendSaveUseCase {
             return true;
         }
     }
+
+    public void deleteFriend(User user, Long friendId) {
+
+        Friendship friendship = friendQueryService.findByUserIdAndFriendId(user.getId(), friendId);
+
+        if (friendship != null) {
+            friendQueryService.delete(friendship);
+        } else {
+            throw new UserExceptionHandler(UserErrorCode.FRIEND_NOT_FOUND);
+        }
+    }
+
 }
