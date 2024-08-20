@@ -27,4 +27,9 @@ public class FriendQueryService {
     public Friendship findByUserIdAndFriendId(Long userId, Long friendId) {
         return friendShipRepository.findFriendshipByUserIdAndFriendId(userId, friendId);
     }
+
+    public List<User> findFriendRequestList(Long userId) {
+        return friendShipRepository.findFriendshipsByUserId(userId)
+                .stream().map(Friendship::getFriend).toList();
+    }
 }

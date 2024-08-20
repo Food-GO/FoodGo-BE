@@ -2,6 +2,7 @@ package com.foodgo.apimodule.community.presentation;
 
 import com.foodgo.apimodule.community.application.FriendFindUseCase;
 import com.foodgo.apimodule.community.application.FriendSaveUseCase;
+import com.foodgo.apimodule.community.dto.FriendRequestList;
 import com.foodgo.apimodule.community.dto.FriendSearchList;
 import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.coremodule.security.annotation.UserResolver;
@@ -75,6 +76,24 @@ public class CommunityController {
     // 친구 삭제하기
 
     // 친구 요청 리스트
+    @GetMapping("/friend/request")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "친구 요청 리스트",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "친구 요청 리스트 API", description = "친구 요청 리스트 API 입니다.")
+    public ApplicationResponse<List<FriendRequestList>> findFriendRequestList(
+            @UserResolver User user
+    ) {
+
+        List<FriendRequestList> requestLists = friendFindUseCase.findFriendRequestList(user.getId());
+        return ApplicationResponse.onSuccess(requestLists);
+    }
 
     // 친구 수락하기
 

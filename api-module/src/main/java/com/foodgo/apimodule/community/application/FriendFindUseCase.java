@@ -1,5 +1,6 @@
 package com.foodgo.apimodule.community.application;
 
+import com.foodgo.apimodule.community.dto.FriendRequestList;
 import com.foodgo.apimodule.community.dto.FriendSearchList;
 import com.foodgo.coremodule.community.domain.Challenge;
 import com.foodgo.coremodule.community.domain.Friendship;
@@ -10,7 +11,9 @@ import com.foodgo.coremodule.user.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -105,6 +108,13 @@ public class FriendFindUseCase {
                             challengeYn
                     );
                 }).toList();
+    }
+
+    public List<FriendRequestList> findFriendRequestList(Long userId) {
+
+        return friendQueryService.findFriendRequestList(userId).stream()
+                .map(user -> new FriendRequestList(user.getId(), user.getUsername()))
+                .collect(Collectors.toList());
     }
 
 }
