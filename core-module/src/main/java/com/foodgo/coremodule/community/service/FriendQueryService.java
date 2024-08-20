@@ -32,4 +32,8 @@ public class FriendQueryService {
         return friendShipRepository.findFriendshipsByUserId(userId)
                 .stream().map(Friendship::getFriend).toList();
     }
+
+    public void save(Friendship friendship) {
+        friendShipRepository.save(friendship);
+    }
 }
