@@ -20,7 +20,11 @@ public class FriendSaveUseCase {
 
     public void acceptFriendRequest(Long userId, Long friendId) {
 
-        Friendship friendship = friendQueryService.findByUserIdAndFriendId(userId, friendId);
+        Friendship friendship = friendQueryService.findByUserIdAndFriendId(friendId, userId);
+        if (friendship == null) {
+            throw new UserExceptionHandler(UserErrorCode.FRIEND_NOT_FOUND);
+        }
+
         friendship.markAsMutual();
         friendQueryService.save(friendship);
     }

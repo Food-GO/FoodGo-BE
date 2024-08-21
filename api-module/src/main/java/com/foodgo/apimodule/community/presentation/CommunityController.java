@@ -48,7 +48,7 @@ public class CommunityController {
     }
 
     // 닉네임으로 친구 검색
-    @GetMapping("/friend/{nickname}")
+    @GetMapping("/friend/search/{nickname}")
     @ApiResponses(
             value = {
                     @ApiResponse(
