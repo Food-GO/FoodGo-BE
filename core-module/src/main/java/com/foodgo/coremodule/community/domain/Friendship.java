@@ -18,11 +18,11 @@ public class Friendship extends BaseEntity {
     @Column(name = "friendship_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "friend_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User friend;
 
@@ -41,4 +41,3 @@ public class Friendship extends BaseEntity {
         this.isMutual = true;
     }
 }
-
