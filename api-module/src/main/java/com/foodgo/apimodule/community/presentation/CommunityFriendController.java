@@ -19,16 +19,16 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/community")
+@RequestMapping("/api/v1/community/friend")
 @Validated
-@Tag(name = "community", description = "커뮤니티 관련 API")
-public class CommunityController {
+@Tag(name = "community - friend", description = "커뮤니티 친구 관련 API")
+public class CommunityFriendController {
 
     private final FriendFindUseCase friendFindUseCase;
     private final FriendSaveUseCase friendSaveUseCase;
 
     // 친구 목록 조회 - (공동 목표까지 포함)
-    @GetMapping("/friend")
+    @GetMapping
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -48,7 +48,7 @@ public class CommunityController {
     }
 
     // 닉네임으로 친구 검색
-    @GetMapping("/friend/search/{nickname}")
+    @GetMapping("/search/{nickname}")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -69,7 +69,7 @@ public class CommunityController {
     }
 
     // 친구 신청하기
-    @PostMapping("/friend/request/{friendId}")
+    @PostMapping("/request/{friendId}")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -94,7 +94,7 @@ public class CommunityController {
     }
 
     // 친구 삭제하기
-    @DeleteMapping("/friend/request/{friendId}")
+    @DeleteMapping("/request/{friendId}")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -115,7 +115,7 @@ public class CommunityController {
     }
 
     // 친구 요청 리스트
-    @GetMapping("/friend/request")
+    @GetMapping("/request")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -135,7 +135,7 @@ public class CommunityController {
     }
 
     // 친구 수락하기
-    @PatchMapping("/friend/accept/{friendId}")
+    @PatchMapping("/accept/{friendId}")
     @ApiResponses(
             value = {
                     @ApiResponse(
