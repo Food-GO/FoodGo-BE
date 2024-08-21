@@ -46,7 +46,7 @@ public class CuisineController {
     public ApplicationResponse<List<IngredientInfo>> findIngredientList(@UserResolver User user) {
 
         final List<IngredientInfo> ingredientInfo = cuisineFindUseCase.findIngredientInfo(user);
-        return ApplicationResponse.ok(ingredientInfo);
+        return ApplicationResponse.onSuccess(ingredientInfo);
     }
 
     // 식재료 추가하기
@@ -66,7 +66,7 @@ public class CuisineController {
                                                          @RequestPart(value = "file") MultipartFile multipartFile) {
 
         cuisineSaveUseCase.saveIngredient(addReq, multipartFile, user);
-        return ApplicationResponse.ok("식재료 리스트 추가되었습니다.");
+        return ApplicationResponse.onSuccess("식재료 리스트 추가되었습니다.");
     }
 
     // 식재료 삭제하기
@@ -84,7 +84,7 @@ public class CuisineController {
     public ApplicationResponse<String> deleteIngredient(@PathVariable Long ingredientId) {
 
         cuisineSaveUseCase.deleteIngredient(ingredientId);
-        return ApplicationResponse.ok("식재료 리스트가 삭제되었습니다.");
+        return ApplicationResponse.onSuccess("식재료 리스트가 삭제되었습니다.");
     }
 
     // 테스트 조회
@@ -104,7 +104,7 @@ public class CuisineController {
     ) {
 
         TestResultType type = cuisineFindUseCase.findTestResult(user);
-        return ApplicationResponse.ok(type);
+        return ApplicationResponse.onSuccess(type);
     }
 
     // 테스트 결과
@@ -124,7 +124,7 @@ public class CuisineController {
             @RequestBody TestResultType resultType) {
 
         cuisineSaveUseCase.saveCuisineTest(user, resultType);
-        return ApplicationResponse.ok("결과가 저장되었습니다.");
+        return ApplicationResponse.onSuccess("결과가 저장되었습니다.");
     }
 
     // 조리법 결과 가져오기
@@ -143,7 +143,7 @@ public class CuisineController {
             @RequestBody RecipeDTO.Request request) throws URISyntaxException {
 
         final List<RecipeDTO.RecipeDetail> recipeResult = cuisineFindUseCase.findRecipeResult(request);
-        return ApplicationResponse.ok(recipeResult);
+        return ApplicationResponse.onSuccess(recipeResult);
     }
 
 }

@@ -15,8 +15,8 @@ public enum GlobalErrorCode implements BaseErrorCode {
     private final String message;
 
     @Override
-    public ApiResponse<Void> getErrorResponse() {
-        return ApiResponse.onFailure(code, message);
+    public ApplicationResponse<Void> getErrorResponse() {
+        return ApplicationResponse.onFailure(code, message);
     }
 
 }

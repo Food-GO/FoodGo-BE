@@ -1,7 +1,7 @@
 package com.foodgo.commonmodule.security.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,7 @@ public class HttpResponseUtil {
 	public static void setSuccessResponse(HttpServletResponse response, HttpStatus httpStatus, Object body) throws
 		IOException {
 		log.info("[*] Success Response");
-		String responseBody = objectMapper.writeValueAsString(ApiResponse.onSuccess(body));
+		String responseBody = objectMapper.writeValueAsString(ApplicationResponse.onSuccess(body));
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setStatus(httpStatus.value());
 		response.setCharacterEncoding("UTF-8");
