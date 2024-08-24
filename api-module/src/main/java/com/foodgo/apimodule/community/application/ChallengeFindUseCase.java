@@ -3,7 +3,8 @@ package com.foodgo.apimodule.community.application;
 import com.foodgo.apimodule.community.dto.ChallengeList;
 import com.foodgo.apimodule.community.mapper.ChallengeMapper;
 import com.foodgo.coremodule.community.domain.Challenge;
-import com.foodgo.coremodule.community.domain.ChallengeType;
+import com.foodgo.coremodule.community.exception.ChallengeErrorCode;
+import com.foodgo.coremodule.community.exception.ChallengeException;
 import com.foodgo.coremodule.community.service.ChallengeQueryService;
 import com.foodgo.coremodule.report.domain.Report;
 import com.foodgo.coremodule.report.service.ReportQueryService;
@@ -38,62 +39,41 @@ public class ChallengeFindUseCase {
         List<Report> friendReports = reportQueryService.findReportByDate(
                 challenge.getFriendship().getFriend().getId(), startDate, endDateTimeEndOfDay);
 
-        // 챌린지 타입에 맞게 리포트 달성률 계산
-        double myRate = 0.0;
-        double friendRate = 0.0;
-
-        if (challenge.getType() == ChallengeType.CALORIE) {
-
-            int totalSum = myReports.stream()
-                    .mapToInt(Report::getTotal)
-                    .sum();
-            int friendSum = friendReports.stream()
-                    .mapToInt(Report::getTotal)
-                    .sum();
-            myRate = (double) totalSum / challenge.getValue();
-            friendRate = (double) friendSum / challenge.getValue();
-        } else if (challenge.getType() == ChallengeType.CARB) {
-
-            int totalSum = myReports.stream()
-                    .mapToInt(Report::getCarb)
-                    .sum();
-            int friendSum = friendReports.stream()
-                    .mapToInt(Report::getCarb)
-                    .sum();
-            myRate = (double) totalSum / challenge.getValue();
-            friendRate = (double) friendSum / challenge.getValue();
-        } else if (challenge.getType() == ChallengeType.PROTEIN) {
-
-            int totalSum = myReports.stream()
-                    .mapToInt(Report::getProtein)
-                    .sum();
-            int friendSum = friendReports.stream()
-                    .mapToInt(Report::getProtein)
-                    .sum();
-            myRate = (double) totalSum / challenge.getValue();
-            friendRate = (double) friendSum / challenge.getValue();
-        } else if (challenge.getType() == ChallengeType.FAT) {
-
-            int totalSum = myReports.stream()
-                    .mapToInt(Report::getFat)
-                    .sum();
-            int friendSum = friendReports.stream()
-                    .mapToInt(Report::getFat)
-                    .sum();
-            myRate = (double) totalSum / challenge.getValue();
-            friendRate = (double) friendSum / challenge.getValue();
-        } else if (challenge.getType() == ChallengeType.FREQUENCY) {
-
-            int totalSum = myReports.size();
-            int friendSum = friendReports.size();
-            myRate = (double) totalSum / challenge.getValue();
-            friendRate = (double) friendSum / challenge.getValue();
-        }
+        // 챌린지 타입에 따른 달성률 계산
+        double myRate = calculateRate(myReports, challenge);
+        double friendRate = calculateRate(friendReports, challenge);
 
         return ChallengeMapper.toDto(challenge, myRate, friendRate);
+    }
+
+    private double calculateRate(List<Report> reports, Challenge challenge) {
+        int totalSum = 0;
+
+        switch (challenge.getType()) {
+            case CALORIE:
+                totalSum = reports.stream().mapToInt(Report::getTotal).sum();
+                break;
+            case CARB:
+                totalSum = reports.stream().mapToInt(Report::getCarb).sum();
+                break;
+            case PROTEIN:
+                totalSum = reports.stream().mapToInt(Report::getProtein).sum();
+                break;
+            case FAT:
+                totalSum = reports.stream().mapToInt(Report::getFat).sum();
+                break;
+            case FREQUENCY:
+                totalSum = reports.size();
+                break;
+            default:
+                throw new ChallengeException(ChallengeErrorCode.NO_CHALLENGE_TYPE);
+        }
+
+        return (double) totalSum / challenge.getValue();
     }
 
     private LocalDate toLocalDate(Integer year, Integer month, Integer date) {
         return LocalDate.of(year, month, date);
     }
+
 }
