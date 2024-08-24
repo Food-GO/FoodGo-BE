@@ -1,13 +1,13 @@
 package com.foodgo.apimodule.community.dto;
 
+import com.foodgo.coremodule.community.domain.ChallengeType;
+
 public record FriendSearchList(
         Long userId,
         String name,
         String profileImg,
-        Integer recentTotalCalorie,
-        Integer recentCarbRate,
-        Integer recentProteinRate,
-        Integer recentFatRate,
+        ChallengeType challengeType,
+        Integer challengeValue,
         Boolean friendYn,
         Boolean friendRequestYn,
         Boolean challengeYn

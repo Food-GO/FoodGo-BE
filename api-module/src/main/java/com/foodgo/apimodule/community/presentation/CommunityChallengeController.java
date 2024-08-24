@@ -47,7 +47,7 @@ public class CommunityChallengeController {
     }
 
     // 챌린지 삭제
-    @PostMapping("/{challengeId}")
+    @DeleteMapping("/{challengeId}")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -68,7 +68,7 @@ public class CommunityChallengeController {
     }
 
     // 챌린지 조회 (달성률 포함)
-    @PostMapping("/{challengeId}")
+    @GetMapping("/{challengeId}")
     @ApiResponses(
             value = {
                     @ApiResponse(
