@@ -1,6 +1,8 @@
 package com.foodgo.coremodule.community.service;
 
 import com.foodgo.coremodule.community.domain.Challenge;
+import com.foodgo.coremodule.community.exception.ChallengeErrorCode;
+import com.foodgo.coremodule.community.exception.ChallengeException;
 import com.foodgo.coremodule.community.repository.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,11 @@ import org.springframework.stereotype.Service;
 public class ChallengeQueryService {
 
     private final ChallengeRepository challengeRepository;
+
+    public Challenge findChallengeById(Long challengeId) {
+        return challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new ChallengeException(ChallengeErrorCode.NO_CHALLENGE_INFO));
+    }
 
     public Challenge findRecentChallenge(Long userId) {
         return challengeRepository.findTopByFriendshipUserIdOrderByCreatedAtDesc(userId);
@@ -21,5 +28,9 @@ public class ChallengeQueryService {
 
     public void saveChallenge(Challenge challenge) {
         challengeRepository.save(challenge);
+    }
+
+    public void deleteChallenge(Long challengeId) {
+        challengeRepository.deleteById(challengeId);
     }
 }
