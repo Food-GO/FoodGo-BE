@@ -28,4 +28,13 @@ public class Report extends BaseEntity {
     @Column(name = "report_total", nullable = false)
     private Integer total;
 
+    @Column(name = "report_carb", nullable = false)
+    private Integer carb;
+
+    @Column(name = "report_protein", nullable = false)
+    private Integer protein;
+
+    @Column(name = "report_fat", nullable = false)
+    private Integer fat;
+
 }

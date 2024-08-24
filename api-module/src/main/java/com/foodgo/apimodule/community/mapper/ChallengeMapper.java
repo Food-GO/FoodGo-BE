@@ -22,7 +22,7 @@ public class ChallengeMapper {
                 .build();
     }
 
-    public static ChallengeList toDto(Challenge entity) {
+    public static ChallengeList toDto(Challenge entity, Double myRate, Double friendRate) {
         if (entity == null) {
             return null;
         }
@@ -34,8 +34,8 @@ public class ChallengeMapper {
                 entity.getYear(),
                 entity.getMonth(),
                 entity.getDate(),
-                "0",
-                "0"
+                myRate,
+                friendRate
         );
     }
 }

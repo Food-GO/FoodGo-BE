@@ -9,7 +9,7 @@ public record ChallengeList(
         Integer year,
         Integer month,
         Integer date,
-        String myAchieveRate,
-        String friendAchieveRate
+        Double myAchieveRate,
+        Double friendAchieveRate
 ) {
 }

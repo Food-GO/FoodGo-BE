@@ -2,7 +2,9 @@ package com.foodgo.coremodule.community.domain;
 
 public enum ChallengeType {
     CALORIE("칼로리"),
-    NUTRIENT("영양성분"),
+    CARB("탄수화물"),
+    PROTEIN("단백질"),
+    FAT("지방"),
     FREQUENCY("식사주기")
     ;
 
