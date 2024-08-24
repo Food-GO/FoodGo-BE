@@ -1,4 +1,4 @@
-package com.foodgo.coremodule.community.domain;
+package com.foodgo.coremodule.report.domain;
 
 import com.foodgo.commonmodule.common.BaseEntity;
 import com.foodgo.coremodule.user.domain.User;
@@ -10,23 +10,22 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Entity
-@Table(name = "challenge_deail")
-public class ChallengeDetail extends BaseEntity {
+@Table(name = "report")
+public class Report extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "challenge_detail_id")
+    @Column(name = "report_id")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "challenge_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Challenge challenge;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
-    @Column(name = "target_value", nullable = false)
-    private Integer targetValue;
-}
+    @Column(name = "report_type", nullable = false)
+    private MealType type;
 
+    @Column(name = "report_total", nullable = false)
+    private Integer total;
+
+}

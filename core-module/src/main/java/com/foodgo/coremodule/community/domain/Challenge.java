@@ -4,8 +4,6 @@ import com.foodgo.commonmodule.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -21,6 +19,9 @@ public class Challenge extends BaseEntity {
 
     @Column(name = "challenge_name", nullable = false)
     private String name;
+
+    @Column(name = "challenge_type", nullable = false)
+    private ChallengeType type;
 
     @Column(name = "challenge_calorie", nullable = false)
     private Integer totalCalorie;
@@ -47,6 +48,4 @@ public class Challenge extends BaseEntity {
     @JoinColumn(name = "friendship_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Friendship friendship;
 
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<ChallengeDetail> challengeDetails;
 }
