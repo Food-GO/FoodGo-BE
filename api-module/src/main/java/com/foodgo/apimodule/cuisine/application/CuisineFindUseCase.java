@@ -4,6 +4,7 @@ import com.foodgo.apimodule.cuisine.dto.RecipeDTO;
 import com.foodgo.apimodule.cuisine.dto.TestResultType;
 import com.foodgo.apimodule.ingredient.dto.IngredientInfo;
 import com.foodgo.apimodule.ingredient.mapper.IngredientMapper;
+import com.foodgo.commonmodule.image.service.FileService;
 import com.foodgo.coremodule.cuisine.domain.Ingredient;
 import com.foodgo.coremodule.cuisine.domain.TestType;
 import com.foodgo.coremodule.cuisine.exception.CuisineErrorCode;
@@ -25,6 +26,7 @@ import java.util.List;
 public class CuisineFindUseCase {
 
     private final CuisineQueryService cuisineQueryService;
+    private final FileService fileService;
 
     @Value("${spring.openapi.key.recipe}")
     private String apiKey;
@@ -35,7 +37,8 @@ public class CuisineFindUseCase {
 
         List<Ingredient> ingredients = cuisineQueryService.findIngredientsByUserId(user.getId());
         for (Ingredient ingredient : ingredients) {
-            final IngredientInfo infoDTO = IngredientMapper.toInfoDTO(ingredient);
+            String imageUrl = ingredient.getImageUrl().isEmpty() ? null : fileService.getDownloadPresignedUrl(ingredient.getImageUrl());
+            final IngredientInfo infoDTO = IngredientMapper.toInfoDTO(ingredient, imageUrl);
             infoList.add(infoDTO);
         }
 

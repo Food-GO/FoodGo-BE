@@ -10,20 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class IngredientMapper {
 
-    public static IngredientInfo toInfoDTO(Ingredient ingredient) {
+    public static IngredientInfo toInfoDTO(Ingredient ingredient, String imageUrl) {
         return new IngredientInfo(
                 ingredient.getId(),
                 ingredient.getName(),
                 ingredient.getQuantity(),
-                ingredient.getImageUrl()
+                imageUrl
         );
     }
 
-    public static Ingredient toIngredientEntity(IngredientAddReq addReq, User user, String imageUrl) {
+    public static Ingredient toIngredientEntity(IngredientAddReq addReq, User user) {
         return Ingredient.builder()
                 .name(addReq.name())
                 .quantity(addReq.quantity())
-                .imageUrl(imageUrl)
+                .imageUrl(addReq.imageUrl())
                 .user(user)
                 .build();
     }
