@@ -45,12 +45,12 @@ jobs:
         run: ./gradlew bootJar
 
       - name: 도커 이미지 빌드
-        run: sudo docker build -t ${{ secrets.DOCKER_IMG }} --platform linux/amd64 .
+        run: sudo docker build -t ${{ secrets.DOCKER_IMG_SPRING }} --platform linux/amd64 .
 
       - name: 도커 이미지 push
         run: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          sudo docker push ${{ secrets.DOCKER_IMG }} 
+          sudo docker push ${{ secrets.DOCKER_IMG_SPRING }} 
 
       - name: scp file
         uses: appleboy/scp-action@master
@@ -73,6 +73,7 @@ jobs:
             echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
             sudo docker stop $(sudo docker ps -a -q) 
             sudo docker rm -f $(sudo docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_IMG }}
+            sudo docker pull ${{ secrets.DOCKER_IMG_SPRING }}
+            sudo docker pull ${{ secrets.DOCKER_IMG_FLASK }}
             sudo docker-compose -f docker-compose.yml up -d
             sudo docker image prune -f
