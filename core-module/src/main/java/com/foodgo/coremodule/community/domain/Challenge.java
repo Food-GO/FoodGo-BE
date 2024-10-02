@@ -4,8 +4,6 @@ import com.foodgo.commonmodule.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -19,20 +17,11 @@ public class Challenge extends BaseEntity {
     @Column(name = "challenge_id")
     private Long id;
 
-    @Column(name = "challenge_name", nullable = false)
-    private String name;
+    @Column(name = "challenge_type", nullable = false)
+    private ChallengeType type;
 
-    @Column(name = "challenge_calorie", nullable = false)
-    private Integer totalCalorie;
-
-    @Column(name = "challenge_carb_rate", nullable = false)
-    private Integer carbRate;
-
-    @Column(name = "challenge_protein_rate", nullable = false)
-    private Integer proteinRate;
-
-    @Column(name = "challenge_fat_rate", nullable = false)
-    private Integer fatRate;
+    @Column(name = "challenge_value", nullable = false)
+    private Integer value;
 
     @Column(name = "challenge_year", nullable = false)
     private Integer year;
@@ -43,10 +32,8 @@ public class Challenge extends BaseEntity {
     @Column(name = "challenge_date", nullable = false)
     private Integer date;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "friendship_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Friendship friendship;
 
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<ChallengeDetail> challengeDetails;
 }
