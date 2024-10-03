@@ -1,4 +1,4 @@
-package com.foodgo.commonmodule.image.exception;
+package com.foodgo.coremodule.community.exception;
 
 import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ImageErrorCode implements BaseErrorCode {
+public enum ChallengeErrorCode implements BaseErrorCode {
 
-    FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "3000", "파일 업로드에 실패했습니다."),
-    FILE_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "3000", "파일 삭제에 실패했습니다."),
-    WRONG_FILE_FORMAT(HttpStatus.INTERNAL_SERVER_ERROR, "3000", "파일 타입이 올바르지 않습니다."),
+    NO_CHALLENGE_INFO(HttpStatus.BAD_REQUEST, "2000", "챌린지가 존재하지 않습니다."),
+    NO_CHALLENGE_TYPE(HttpStatus.BAD_REQUEST, "2000", "챌린지 타입이 존재하지 않습니다."),
+    NOT_CHALLENGE_USER(HttpStatus.BAD_REQUEST, "2000", "본인이 생성한 챌린지가 아닙니다."),
     ;
 
     private final HttpStatus httpStatus;

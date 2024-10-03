@@ -1,6 +1,6 @@
 package com.foodgo.coremodule.security.filter;
 
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.common.BaseErrorCode;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
 import com.foodgo.coremodule.security.jwt.exception.SecurityCustomException;
@@ -29,7 +29,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		} catch (SecurityCustomException e) {
 			log.warn("[*] SecurityCustomException : ", e);
 			BaseErrorCode errorCode = e.getErrorCode();
-			ApiResponse<String> errorResponse = ApiResponse.onFailure(
+			ApplicationResponse<String> errorResponse = ApplicationResponse.onFailure(
 				errorCode.getCode(),
 				errorCode.getMessage(),
 				e.getMessage()
@@ -41,7 +41,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			);
 		} catch (Exception e) {
 			log.error("[*] Exception : ", e);
-			ApiResponse<String> errorResponse = ApiResponse.onFailure(
+			ApplicationResponse<String> errorResponse = ApplicationResponse.onFailure(
 				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getCode(),
 				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getMessage(),
 				e.getMessage()

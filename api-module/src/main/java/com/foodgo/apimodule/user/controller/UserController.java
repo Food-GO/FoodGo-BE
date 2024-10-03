@@ -11,7 +11,7 @@ import com.foodgo.coremodule.user.service.UserService;
 import com.foodgo.coremodule.user.domain.User;
 import com.foodgo.coremodule.user.dto.request.UserRegisterRequest;
 import com.foodgo.coremodule.user.dto.response.UserRegisterResponse;
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -43,53 +43,53 @@ public class UserController {
     private final UserQueryService userQueryService;
 
     @PostMapping(value = "/join", consumes = "multipart/form-data")
-    public ApiResponse<UserRegisterResponse> register(
+    public ApplicationResponse<UserRegisterResponse> register(
         @RequestPart(value = "request") @Valid UserRegisterRequest request,
         @RequestPart(name = "profileImage", required = false) MultipartFile file
     ) {
-        return ApiResponse.onSuccess(userService.register(request, file));
+        return ApplicationResponse.onSuccess(userService.register(request, file));
     }
 
     @GetMapping("/username")
-    public ApiResponse<Boolean> checkUsername(@RequestParam String username) {
-        return ApiResponse.onSuccess(userQueryService.checkUsername(username));
+    public ApplicationResponse<Boolean> checkUsername(@RequestParam String username) {
+        return ApplicationResponse.onSuccess(userQueryService.checkUsername(username));
     }
 
     @GetMapping("/nickname")
-    public ApiResponse<Boolean> checkNickname(@RequestParam String nickname) {
-        return ApiResponse.onSuccess(userQueryService.checkNickname(nickname));
+    public ApplicationResponse<Boolean> checkNickname(@RequestParam String nickname) {
+        return ApplicationResponse.onSuccess(userQueryService.checkNickname(nickname));
     }
 
     @GetMapping("/reissue")
-    public ApiResponse<JwtDto> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
-        return ApiResponse.onSuccess(userService.reissueToken(refreshToken));
+    public ApplicationResponse<JwtDto> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
+        return ApplicationResponse.onSuccess(userService.reissueToken(refreshToken));
     }
 
     @PatchMapping(value = "/password")
-    public ApiResponse<String> updatePassword(
+    public ApplicationResponse<String> updatePassword(
         @UserResolver User user,
         @RequestBody @Valid PasswordUpdateRequest request
     ) {
         userService.updatePassword(user, request);
-        return ApiResponse.onSuccess("비밀번호 변경 성공");
+        return ApplicationResponse.onSuccess("비밀번호 변경 성공");
     }
 
     @GetMapping("/me")
-    public ApiResponse<UserDetailGetResponse> getMyUser(@UserResolver User authUser) {
-        return ApiResponse.onSuccess(UserDetailGetResponse.from(authUser));
+    public ApplicationResponse<UserDetailGetResponse> getMyUser(@UserResolver User authUser) {
+        return ApplicationResponse.onSuccess(UserDetailGetResponse.from(authUser));
     }
 
     @PatchMapping(value = "/me", consumes = "multipart/form-data")
-    public ApiResponse<UserUpdateResponse> updateMyUser(
+    public ApplicationResponse<UserUpdateResponse> updateMyUser(
         @UserResolver User user,
         @RequestPart @Valid UserUpdateRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile file) {
-        return ApiResponse.onSuccess(userService.updateMyUser(user, request, file));
+        return ApplicationResponse.onSuccess(userService.updateMyUser(user, request, file));
     }
 
     @DeleteMapping("/me")
-    public ApiResponse<String> deleteUser(@UserResolver User user) {
+    public ApplicationResponse<String> deleteUser(@UserResolver User user) {
         userService.deactivate(user);
-        return ApiResponse.onSuccess("탈퇴 성공");
+        return ApplicationResponse.onSuccess("탈퇴 성공");
     }
 }

@@ -18,19 +18,19 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler({CustomException.class})
-	public ResponseEntity<ApiResponse<Void>> handleCustomException(CustomException e) {
+	public ResponseEntity<ApplicationResponse<Void>> handleCustomException(CustomException e) {
 		BaseErrorCode errorCode = e.getErrorCode();
 		log.warn(">>>>> Custom Exception : {}", errorCode.getMessage());
 		return ResponseEntity.status(errorCode.getHttpStatus()).body(errorCode.getErrorResponse());
 	}
 
 	@ExceptionHandler({DataIntegrityViolationException.class})
-	public ApiResponse<Object> handleIntegrityConstraint(DataIntegrityViolationException e) {
+	public ApplicationResponse<Object> handleIntegrityConstraint(DataIntegrityViolationException e) {
 		log.warn(">>>>> Data Integrity Violation Exception : {}", e.getMessage());
 		// DB 에 들어갈 값이 잘못됨
 		// BaseErrorCode errorStatus = OrganizationErrorCode.ORGANIZATION_ALREADY_EXIST;
 		BaseErrorCode errorStatus = GlobalErrorCode.VALIDATION_FAILED;
-		return ApiResponse.onFailure(
+		return ApplicationResponse.onFailure(
 			errorStatus.getCode(),
 			errorStatus.getMessage()
 		);
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
 
 	// @Valid 통해 MethodArgumentNotValidException 감지
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	protected ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(
+	protected ResponseEntity<ApplicationResponse<Map<String, String>>> handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException ex
 	) {
 		// 실패한 validation 을 담을 Map
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 		List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 		// fieldErrors 를 순회하며 failedValidations 에 담는다.
 		fieldErrors.forEach(error -> failedValidations.put(error.getField(), error.getDefaultMessage()));
-		ApiResponse<Map<String, String>> errorResponse = ApiResponse.onFailure(
+		ApplicationResponse<Map<String, String>> errorResponse = ApplicationResponse.onFailure(
 			GlobalErrorCode.VALIDATION_FAILED.getCode(),
 			GlobalErrorCode.VALIDATION_FAILED.getMessage(),
 			failedValidations);
@@ -55,10 +55,10 @@ public class GlobalExceptionHandler {
 
 	// 그 외의 정의되지 않은 모든 예외 처리
 	@ExceptionHandler({Exception.class})
-	public ResponseEntity<ApiResponse<String>> handleAllException(Exception e) {
+	public ResponseEntity<ApplicationResponse<String>> handleAllException(Exception e) {
 		log.error(">>>>> Internal Server Error : ", e);
 		BaseErrorCode errorCode = GlobalErrorCode.INTERNAL_SERVER_ERROR;
-		ApiResponse<String> errorResponse = ApiResponse.onFailure(
+		ApplicationResponse<String> errorResponse = ApplicationResponse.onFailure(
 			errorCode.getCode(),
 			errorCode.getMessage(),
 			e.getMessage()
