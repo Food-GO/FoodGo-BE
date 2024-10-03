@@ -1,108 +1,53 @@
 package com.foodgo.commonmodule.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.extern.jackson.Jacksonized;
+import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 
-@Data
-@Builder
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
-@Jacksonized
+@JsonPropertyOrder({"statusCode", "message", "content"})
 public class ApplicationResponse<T> {
-    private ApplicationResult result;
-    private T payload;
 
-    public static <T> ApplicationResponse<T> ok(T payload) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.OK.value())
-                        .message("API 호출 성공")
-                        .build())
-                .payload(payload)
-                .build();
+    // @JsonProperty("isSuccess")
+    // private final Boolean isSuccess;
+
+    @JsonProperty("statusCode")
+    @NonNull
+    private final String statusCode;
+
+    @JsonProperty("message")
+    @NonNull
+    private final String message;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("content")
+    private T content;
+
+    // 성공한 경우 응답 생성
+    public static <T> ApplicationResponse<T> onSuccess(T content) {
+        // return new ApiResponse<>(true, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), result);
+        return new ApplicationResponse<>(HttpStatus.OK.name(), HttpStatus.OK.getReasonPhrase(), content);
     }
 
-    public static <T> ApplicationResponse<T> ok(T payload, String message) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.OK.value())
-                        .message(message)
-                        .build())
-                .payload(payload)
-                .build();
+    // 실패한 경우 응답 생성
+    public static <T> ApplicationResponse<T> onFailure(String statusCode, String message) {
+        // return new ApiResponse<>(false, code, message, data);
+        return new ApplicationResponse<>(statusCode, message, null);
     }
 
-    public static <T> ApplicationResponse<T> badRequest(T payload) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.BAD_REQUEST.value())
-                        .message("잘못된 요청입니다.")
-                        .build())
-                .payload(payload)
-                .build();
+    public static <T> ApplicationResponse<T> onFailure(String statusCode, String message, T content) {
+        return new ApplicationResponse<>(statusCode, message, content);
     }
 
-    public static <T> ApplicationResponse<T> badRequest(T payload, String message) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.BAD_REQUEST.value())
-                        .message(message)
-                        .build())
-                .payload(payload)
-                .build();
-    }
-
-    public static <T> ApplicationResponse<T> notAuthenticated(T payload) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.UNAUTHORIZED.value())
-                        .message("잘못된 접근입니다.")
-                        .build())
-                .payload(payload)
-                .build();
-    }
-
-    public static <T> ApplicationResponse<T> notAuthenticated(T payload, String message) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.UNAUTHORIZED.value())
-                        .message(message)
-                        .build())
-                .payload(payload)
-                .build();
-    }
-
-    public static <T> ApplicationResponse<T> server(T payload) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message("API 호출 실패")
-                        .build())
-                .payload(payload)
-                .build();
-    }
-
-    public static <T> ApplicationResponse<T> server(T payload, String message) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message(message)
-                        .build())
-                .payload(payload)
-                .build();
-    }
-
-    public static <T> ApplicationResponse<T> custom(T payload, Integer code, String message) {
-        return ApplicationResponse.<T>builder()
-                .result(ApplicationResult.builder()
-                        .code(code)
-                        .message(message)
-                        .build())
-                .payload(payload)
-                .build();
+    // Json serialize
+    public String toJsonString() throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(this);
     }
 }

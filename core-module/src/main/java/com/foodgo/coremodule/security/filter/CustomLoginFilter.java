@@ -3,7 +3,7 @@ package com.foodgo.coremodule.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foodgo.coremodule.security.jwt.dto.JwtDto;
 import com.foodgo.coremodule.security.user.CustomUserDetails;
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
 import com.foodgo.coremodule.security.util.JwtUtil;
 
@@ -100,7 +100,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		}
 		HttpResponseUtil.setErrorResponse(
 			response, HttpStatus.UNAUTHORIZED,
-			ApiResponse.onFailure(
+			ApplicationResponse.onFailure(
 				HttpStatus.BAD_REQUEST.name(),
 				errorMessage
 			)

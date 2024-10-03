@@ -10,5 +10,5 @@ public interface BaseErrorCode {
 
     String getMessage();
 
-    ApiResponse<Void> getErrorResponse();
+    ApplicationResponse<Void> getErrorResponse();
 }

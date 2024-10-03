@@ -7,7 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import com.foodgo.commonmodule.common.ApiResponse;
+import com.foodgo.commonmodule.common.ApplicationResponse;
 import com.foodgo.commonmodule.security.util.HttpResponseUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,11 +26,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		AuthenticationException authException)
 		throws IOException {
 		HttpStatus httpStatus;
-		ApiResponse<String> errorResponse;
+		ApplicationResponse<String> errorResponse;
 
 		log.error("[*] AuthenticationException: ", authException);
 		httpStatus = HttpStatus.UNAUTHORIZED;
-		errorResponse = ApiResponse.onFailure(
+		errorResponse = ApplicationResponse.onFailure(
 			SecurityErrorCode.INVALID_TOKEN.getCode(),
 			SecurityErrorCode.INVALID_TOKEN.getMessage(),
 			authException.getMessage());

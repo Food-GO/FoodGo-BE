@@ -1,12 +1,10 @@
 package com.foodgo.coremodule.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.foodgo.commonmodule.common.BaseEntity;
 import com.foodgo.coremodule.user.enums.DiseaseType;
 import com.foodgo.coremodule.user.enums.RoleType;
 import com.foodgo.coremodule.user.enums.UsageType;
 import com.foodgo.coremodule.user.enums.UserStatus;
-
 import jakarta.persistence.*;
 import lombok.*;
 
