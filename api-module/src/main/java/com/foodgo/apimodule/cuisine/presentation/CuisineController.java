@@ -64,7 +64,7 @@ public class CuisineController {
                                                          @RequestBody IngredientAddReq addReq) {
 
         cuisineSaveUseCase.saveIngredient(addReq, user);
-        return ApplicationResponse.ok("식재료 리스트 추가되었습니다.");
+        return ApplicationResponse.onSuccess("식재료 리스트 추가되었습니다.");
     }
 
     // 식재료 삭제하기

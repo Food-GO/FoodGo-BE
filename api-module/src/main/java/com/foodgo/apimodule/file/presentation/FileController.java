@@ -25,6 +25,6 @@ public class FileController {
     public ApplicationResponse<PresignedUrlResponse> getPresignedUrl(
             @Parameter(description = "파일 경로의 prefix (이미지의 경우 images 필수)", example = "/images") @RequestParam(name = "prefix", defaultValue = "images") String prefix,
             @Parameter(description = "파일 이름", required = true, example = "example.txt") @RequestParam(name = "fileName") String fileName) {
-        return ApplicationResponse.ok(fileService.getUploadPresignedUrl(prefix, fileName));
+        return ApplicationResponse.onSuccess(fileService.getUploadPresignedUrl(prefix, fileName));
     }
 }
