@@ -16,7 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -62,10 +61,9 @@ public class CuisineController {
     )
     @Operation(summary = "식재료 리스트 추가 API", description = "식재료 리스트 추가 API 입니다.")
     public ApplicationResponse<String> addIngredientList(@UserResolver User user,
-                                                         @RequestPart(value = "dto") IngredientAddReq addReq,
-                                                         @RequestPart(value = "file") MultipartFile multipartFile) {
+                                                         @RequestBody IngredientAddReq addReq) {
 
-        cuisineSaveUseCase.saveIngredient(addReq, multipartFile, user);
+        cuisineSaveUseCase.saveIngredient(addReq, user);
         return ApplicationResponse.onSuccess("식재료 리스트 추가되었습니다.");
     }
 
