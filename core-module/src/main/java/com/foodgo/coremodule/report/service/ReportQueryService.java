@@ -48,18 +48,18 @@ public class ReportQueryService {
         List<Report> thisWeekReports = reportRepository.findReportsByUserAndWeek(userId, startOfThisWeek, endOfThisWeek);
         List<Report> lastWeekReports = reportRepository.findReportsByUserAndWeek(userId, startOfLastWeek, endOfLastWeek);
 
-        // 칼로리 및 영양소 총합 계산
-        int thisWeekTotal = calculateTotalCalories(thisWeekReports);
-        int lastWeekTotal = calculateTotalCalories(lastWeekReports);
+        // 데이터가 있을 때만 합계를 계산하고, 없으면 0으로 처리
+        int thisWeekTotal = thisWeekReports.isEmpty() ? 0 : calculateTotalCalories(thisWeekReports);
+        int lastWeekTotal = lastWeekReports.isEmpty() ? 0 : calculateTotalCalories(lastWeekReports);
 
-        int thisWeekCarbs = calculateTotalCarbs(thisWeekReports);
-        int lastWeekCarbs = calculateTotalCarbs(lastWeekReports);
+        int thisWeekCarbs = thisWeekReports.isEmpty() ? 0 : calculateTotalCarbs(thisWeekReports);
+        int lastWeekCarbs = lastWeekReports.isEmpty() ? 0 : calculateTotalCarbs(lastWeekReports);
 
-        int thisWeekProteins = calculateTotalProteins(thisWeekReports);
-        int lastWeekProteins = calculateTotalProteins(lastWeekReports);
+        int thisWeekProteins = thisWeekReports.isEmpty() ? 0 : calculateTotalProteins(thisWeekReports);
+        int lastWeekProteins = lastWeekReports.isEmpty() ? 0 : calculateTotalProteins(lastWeekReports);
 
-        int thisWeekFats = calculateTotalFats(thisWeekReports);
-        int lastWeekFats = calculateTotalFats(lastWeekReports);
+        int thisWeekFats = thisWeekReports.isEmpty() ? 0 : calculateTotalFats(thisWeekReports);
+        int lastWeekFats = lastWeekReports.isEmpty() ? 0 : calculateTotalFats(lastWeekReports);
 
         // 결과 반환
         return new ReportComparisonDTO(
