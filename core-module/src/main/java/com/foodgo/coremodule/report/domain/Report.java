@@ -37,4 +37,18 @@ public class Report extends BaseEntity {
     @Column(name = "report_fat", nullable = false)
     private Integer fat;
 
+    @Column(name = "report_sugar", nullable = false)
+    private Integer sugar;      // 당류
+
+    @Column(name = "report_sodium", nullable = false)
+    private Integer sodium;     // 나트륨
+
+    @Column(name = "report_cholesterol", nullable = false)
+    private Integer cholesterol; // 콜레스테롤
+
+    @Column(name = "report_saturated_fat", nullable = false)
+    private Integer saturatedFat; // 포화지방산
+
+    @Column(name = "report_trans_fat", nullable = false)
+    private Integer transFat;     // 트랜스지방
 }
