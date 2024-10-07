@@ -7,6 +7,7 @@ import com.foodgo.apimodule.cuisine.dto.TestResultType;
 import com.foodgo.apimodule.ingredient.dto.IngredientAddReq;
 import com.foodgo.apimodule.ingredient.dto.IngredientInfo;
 import com.foodgo.commonmodule.common.ApplicationResponse;
+import com.foodgo.coremodule.cuisine.domain.TestType;
 import com.foodgo.coremodule.security.annotation.UserResolver;
 import com.foodgo.coremodule.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -100,10 +101,16 @@ public class CuisineController {
     public ApplicationResponse<TestResultType> findTestResult(
             @UserResolver User user
     ) {
-
         TestResultType type = cuisineFindUseCase.findTestResult(user);
-        return ApplicationResponse.onSuccess(type);
+
+        // type이 NONE이면 400 상태 코드로 응답
+        if (type.testType() == TestType.NONE) {
+            return ApplicationResponse.onSuccess(400, type);
+        }
+        // 그렇지 않으면 200 OK로 응답
+        return ApplicationResponse.onSuccess(type);  // 기본 200 OK 응답
     }
+
 
     // 테스트 결과
     @PostMapping("/test")

@@ -36,6 +36,12 @@ public class ApplicationResponse<T> {
         return new ApplicationResponse<>(HttpStatus.OK.name(), HttpStatus.OK.getReasonPhrase(), content);
     }
 
+    // statuscode overloading 가능하게 수정
+    public static <M extends Number, T> ApplicationResponse<T> onSuccess(M statusCode, T content) {
+        return new ApplicationResponse<>(statusCode.toString(), HttpStatus.OK.getReasonPhrase(), content);
+    }
+
+
     // 실패한 경우 응답 생성
     public static <T> ApplicationResponse<T> onFailure(String statusCode, String message) {
         // return new ApiResponse<>(false, code, message, data);
