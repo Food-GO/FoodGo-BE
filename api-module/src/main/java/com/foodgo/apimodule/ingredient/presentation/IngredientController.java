@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/ingredients")
-@Tag(name = "ingredinet", description = "식재료 관련 API")
+@Tag(name = "ingredient", description = "식재료 관련 API")
 public class IngredientController {
 
     private final IngredientFindUseCase ingredientFindUseCase;
