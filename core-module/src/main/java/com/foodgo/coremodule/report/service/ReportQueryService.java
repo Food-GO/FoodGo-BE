@@ -34,7 +34,6 @@ public class ReportQueryService {
         return date.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.SUNDAY));
     }
 
-    // 이번 주와 저번 주의 칼로리 리포트 비교
     public ReportComparisonDTO getWeeklyReportComparison(Long userId) {
         LocalDate today = LocalDate.now();
 
@@ -44,49 +43,100 @@ public class ReportQueryService {
         LocalDate startOfLastWeek = startOfThisWeek.minusWeeks(1);
         LocalDate endOfLastWeek = endOfThisWeek.minusWeeks(1);
 
-        // 이번 주와 저번 주 레포트 가져오기
-        List<Report> thisWeekReports = reportRepository.findReportsByUserAndWeek(userId, startOfThisWeek, endOfThisWeek);
-        List<Report> lastWeekReports = reportRepository.findReportsByUserAndWeek(userId, startOfLastWeek, endOfLastWeek);
+        // 이번 주와 저번 주의 칼로리 합산
+        double thisWeekTotal = calculateTotalForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekTotal = calculateTotalForWeek(userId, startOfLastWeek, endOfLastWeek);
 
-        // 데이터가 있을 때만 합계를 계산하고, 없으면 0으로 처리
-        int thisWeekTotal = thisWeekReports.isEmpty() ? 0 : calculateTotalCalories(thisWeekReports);
-        int lastWeekTotal = lastWeekReports.isEmpty() ? 0 : calculateTotalCalories(lastWeekReports);
+        // 영양소별 합산 (탄수화물, 단백질, 지방, 당류, 나트륨 등)
+        double thisWeekCarbs = calculateCarbsForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekCarbs = calculateCarbsForWeek(userId, startOfLastWeek, endOfLastWeek);
 
-        int thisWeekCarbs = thisWeekReports.isEmpty() ? 0 : calculateTotalCarbs(thisWeekReports);
-        int lastWeekCarbs = lastWeekReports.isEmpty() ? 0 : calculateTotalCarbs(lastWeekReports);
+        double thisWeekProteins = calculateProteinsForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekProteins = calculateProteinsForWeek(userId, startOfLastWeek, endOfLastWeek);
 
-        int thisWeekProteins = thisWeekReports.isEmpty() ? 0 : calculateTotalProteins(thisWeekReports);
-        int lastWeekProteins = lastWeekReports.isEmpty() ? 0 : calculateTotalProteins(lastWeekReports);
+        double thisWeekFats = calculateFatsForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekFats = calculateFatsForWeek(userId, startOfLastWeek, endOfLastWeek);
 
-        int thisWeekFats = thisWeekReports.isEmpty() ? 0 : calculateTotalFats(thisWeekReports);
-        int lastWeekFats = lastWeekReports.isEmpty() ? 0 : calculateTotalFats(lastWeekReports);
+        double thisWeekSugar = calculateSugarForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekSugar = calculateSugarForWeek(userId, startOfLastWeek, endOfLastWeek);
+
+        double thisWeekSodium = calculateSodiumForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekSodium = calculateSodiumForWeek(userId, startOfLastWeek, endOfLastWeek);
+
+        double thisWeekCholesterol = calculateCholesterolForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekCholesterol = calculateCholesterolForWeek(userId, startOfLastWeek, endOfLastWeek);
+
+        double thisWeekSaturatedFat = calculateSaturatedFatForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekSaturatedFat = calculateSaturatedFatForWeek(userId, startOfLastWeek, endOfLastWeek);
+
+        double thisWeekTransFat = calculateTransFatForWeek(userId, startOfThisWeek, endOfThisWeek);
+        double lastWeekTransFat = calculateTransFatForWeek(userId, startOfLastWeek, endOfLastWeek);
 
         // 결과 반환
         return new ReportComparisonDTO(
                 lastWeekTotal, thisWeekTotal,
                 lastWeekCarbs, thisWeekCarbs,
                 lastWeekProteins, thisWeekProteins,
-                lastWeekFats, thisWeekFats
+                lastWeekFats, thisWeekFats,
+                lastWeekSugar, thisWeekSugar,
+                lastWeekSodium, thisWeekSodium,
+                lastWeekCholesterol, thisWeekCholesterol,
+                lastWeekSaturatedFat, thisWeekSaturatedFat,
+                lastWeekTransFat, thisWeekTransFat
         );
     }
 
-    // 칼로리 합계 계산
-    private int calculateTotalCalories(List<Report> reports) {
-        return reports.stream().mapToInt(Report::getTotal).sum();
+    // 주간 칼로리 합계 계산
+    private double calculateTotalForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getTotal).sum();
     }
 
-    // 탄수화물 합계 계산
-    private int calculateTotalCarbs(List<Report> reports) {
-        return reports.stream().mapToInt(Report::getCarb).sum();
+    // 주간 탄수화물 합계 계산
+    private double calculateCarbsForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getCarb).sum();
     }
 
-    // 단백질 합계 계산
-    private int calculateTotalProteins(List<Report> reports) {
-        return reports.stream().mapToInt(Report::getProtein).sum();
+    // 주간 단백질 합계 계산
+    private double calculateProteinsForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getProtein).sum();
     }
 
-    // 지방 합계 계산
-    private int calculateTotalFats(List<Report> reports) {
-        return reports.stream().mapToInt(Report::getFat).sum();
+    // 주간 지방 합계 계산
+    private double calculateFatsForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getFat).sum();
+    }
+
+    // 주간 당류 합계 계산
+    private double calculateSugarForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getSugar).sum();
+    }
+
+    // 주간 나트륨 합계 계산
+    private double calculateSodiumForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getSodium).sum();
+    }
+
+    // 주간 콜레스테롤 합계 계산
+    private double calculateCholesterolForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getCholesterol).sum();
+    }
+
+    // 주간 포화지방산 합계 계산
+    private double calculateSaturatedFatForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getSaturatedFat).sum();
+    }
+
+    // 주간 트랜스지방 합계 계산
+    private double calculateTransFatForWeek(Long userId, LocalDate start, LocalDate end) {
+        List<Report> reports = reportRepository.findReportsByUserAndCreatedAtBetween(userId, start.atStartOfDay(), end.atTime(23, 59, 59));
+        return reports.stream().mapToDouble(Report::getTransFat).sum();
     }
 }
