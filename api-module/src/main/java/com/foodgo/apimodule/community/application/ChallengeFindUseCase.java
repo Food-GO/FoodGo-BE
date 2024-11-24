@@ -47,20 +47,20 @@ public class ChallengeFindUseCase {
     }
 
     private double calculateRate(List<Report> reports, Challenge challenge) {
-        int totalSum = 0;
+        double totalSum = 0;
 
         switch (challenge.getType()) {
             case CALORIE:
-                totalSum = reports.stream().mapToInt(Report::getTotal).sum();
+                totalSum = reports.stream().mapToDouble(Report::getTotal).sum();
                 break;
             case CARB:
-                totalSum = reports.stream().mapToInt(Report::getCarb).sum();
+                totalSum = reports.stream().mapToDouble(Report::getCarb).sum();
                 break;
             case PROTEIN:
-                totalSum = reports.stream().mapToInt(Report::getProtein).sum();
+                totalSum = reports.stream().mapToDouble(Report::getProtein).sum();
                 break;
             case FAT:
-                totalSum = reports.stream().mapToInt(Report::getFat).sum();
+                totalSum = reports.stream().mapToDouble(Report::getFat).sum();
                 break;
             case FREQUENCY:
                 totalSum = reports.size();

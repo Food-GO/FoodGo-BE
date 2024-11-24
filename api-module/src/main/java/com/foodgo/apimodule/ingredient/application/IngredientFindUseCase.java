@@ -1,7 +1,10 @@
 package com.foodgo.apimodule.ingredient.application;
 
+import com.foodgo.apimodule.report.mapper.ReportMapper;
 import com.foodgo.coremodule.ingredient.dto.request.IngredientGetRequest;
 import com.foodgo.coremodule.ingredient.dto.response.IngredientGetResponse;
+import com.foodgo.coremodule.report.domain.Report;
+import com.foodgo.coremodule.report.service.ReportQueryService;
 import com.foodgo.coremodule.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +21,8 @@ public class IngredientFindUseCase {
 
     @Value("${spring.openapi.key.ingredient}")
     private String apiKey;
+
+    private final ReportQueryService reportQueryService;
 
     public IngredientGetResponse.Row getIngredient(User user, IngredientGetRequest request) throws URISyntaxException {
 
@@ -38,6 +43,13 @@ public class IngredientFindUseCase {
         List<IngredientGetResponse.Row> filteredRows = response.getI2790().getRow().stream()
                 .filter(row -> groupNameMatches(row, request.groupName()))
                 .toList();
+
+        // 리포트 저장 후 결과 반환
+        if (!filteredRows.isEmpty()) {
+            IngredientGetResponse.Row selectedRow = filteredRows.get(0);
+            Report report = ReportMapper.mapToReport(user, selectedRow);
+            reportQueryService.saveReport(report); // 리포트 저장
+        }
 
         return filteredRows.isEmpty() ? null : filteredRows.get(0);
     }

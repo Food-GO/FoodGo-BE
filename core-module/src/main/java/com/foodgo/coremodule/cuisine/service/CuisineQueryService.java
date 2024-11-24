@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,9 @@ public class CuisineQueryService {
     }
 
     public TestType findTestType(Long userId) {
-        return cuisineTestRepository.findCuisineTestByUserId(userId).getType();
+        return Optional.ofNullable(cuisineTestRepository.findCuisineTestByUserId(userId))
+                .map(CuisineTest::getType)
+                .orElse(TestType.NONE);
     }
+
 }

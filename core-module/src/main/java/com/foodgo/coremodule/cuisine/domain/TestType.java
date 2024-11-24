@@ -6,7 +6,8 @@ public enum TestType {
     ENERGY("에너지 운동가"),
     ADVENTUROUS("모험심 가득한 미식가"),
     HEALTHY("건강한 미식가"),
-    CONVENIENT("간편 요리사")
+    CONVENIENT("간편 요리사"),
+    NONE("결과없음")
     ;
 
     private final String description;
